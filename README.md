@@ -1,6 +1,6 @@
 <div align="center">
 
-# When LLM Integrators Cannot Ask
+# When Code Agents Cannot Ask
 ### Silent Failure under Split Specifications
 
 Corpus, deterministic oracle, and reproduction harness for the paper.
