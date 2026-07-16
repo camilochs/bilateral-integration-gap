@@ -1,7 +1,7 @@
 <div align="center">
 
-# When Code Agents Cannot Ask
-### Silent Failure under Split Specifications
+# Code Agents under Split Specifications
+### Capability Does Not Prevent Silent Failure
 
 Corpus, deterministic oracle, and reproduction harness for the paper.
 
