@@ -1,0 +1,3 @@
+# Only needed to RE-RUN the experiment (harness.py). The offline reproduction
+# (corpus.py, test_scoring.py, analyze.py) uses the Python standard library only.
+openai>=1.0
