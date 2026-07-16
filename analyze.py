@@ -64,3 +64,26 @@ print(f"silent failure on inferable controls (T6,T7): {rate(pc,'silent_failure')
 
 print("\nHeadline: Provided 0.89 correct  ->  Forced 0.69 silent  ->  Forced-flagged 0.76 silent  ->  Dialogue 0.53 correct.")
 print("Naming the underspecified field does not lower silent failure: the fact is absent, not merely unmarked.")
+
+# ---- Per-cell (model x task) capability gating + Wilson CIs ----
+# Isolates capability per task: a cell qualifies only if that model built the adapter when
+# handed the fact on that same task. If Forced silent stays high on qualifying cells, the
+# effect is not per-task coding weakness.
+import math
+def _cell(model, task, arm):
+    return [r for r in DATA if r["model"] == model and r["task"] == task and r["arm"] == arm]
+def _wilson(k, n, z=1.96):
+    if n == 0: return (float("nan"), float("nan"))
+    p = k / n; d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return (max(0.0, c - h), min(1.0, c + h))
+
+print("\n=== Per-cell capability gating (Forced silent failure, irreducible gaps) ===")
+for thr, lab in [(1/3, ">=1/3"), (2/3, ">=2/3"), (1.0, "3/3")]:
+    q = [(m, t) for m in MODELS for t in CLEAN if rate(_cell(m, t, "provided"), "success") >= thr]
+    f = [r for (m, t) in q for r in _cell(m, t, "forced")]
+    k = sum(r["silent_failure"] for r in f); n = len(f); lo, hi = _wilson(k, n)
+    print(f"  Provided {lab:6s}: {len(q):2d} qualifying cells | Forced silent {k}/{n} = {k/n:.2f} "
+          f"[95% CI {lo:.2f}-{hi:.2f}]")
+print("The strictest gate (Provided 3/3) is the paper's headline: 39/51 = 0.76 [0.63-0.86].")
