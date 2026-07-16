@@ -79,9 +79,13 @@ def _wilson(k, n, z=1.96):
     h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
     return (max(0.0, c - h), min(1.0, c + h))
 
+def _prate(m, t):  # unrounded Provided-success rate for the gate (rate() rounds and would misgate 1/3)
+    rows = _cell(m, t, "provided")
+    return sum(r["success"] for r in rows) / len(rows) if rows else 0.0
+
 print("\n=== Per-cell capability gating (Forced silent failure, irreducible gaps) ===")
 for thr, lab in [(1/3, ">=1/3"), (2/3, ">=2/3"), (1.0, "3/3")]:
-    q = [(m, t) for m in MODELS for t in CLEAN if rate(_cell(m, t, "provided"), "success") >= thr]
+    q = [(m, t) for m in MODELS for t in CLEAN if _prate(m, t) >= thr - 1e-9]
     f = [r for (m, t) in q for r in _cell(m, t, "forced")]
     k = sum(r["silent_failure"] for r in f); n = len(f); lo, hi = _wilson(k, n)
     print(f"  Provided {lab:6s}: {len(q):2d} qualifying cells | Forced silent {k}/{n} = {k/n:.2f} "
