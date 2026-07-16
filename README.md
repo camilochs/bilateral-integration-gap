@@ -58,17 +58,6 @@ The local models run through [Ollama](https://ollama.com)'s OpenAI-compatible en
 
 The failure is not a lack of skill. It is a fact that lives on the far side of the interface and is never obtained. `provided` shows the models *can* build the adapter once handed the fact. `forced` withholds it. `forced_flagged` names the ambiguous field so detection is no longer required — and silent failure still does not drop, which is how we know the failure is commitment across genuinely absent information, not a failure to notice.
 
-## Citation
-
-```bibtex
-@article{chaconsartori2026capability,
-  author  = {Chac\'on Sartori, Camilo},
-  title   = {Capability Does Not Close the Gap: Silent Failure in Cross-Organizational LLM Integration},
-  year    = {2026},
-  note    = {Manuscript, under review at ACM AI Letters}
-}
-```
-
 ## License
 
 [MIT](LICENSE) © 2026 Camilo Chacón Sartori — Artificial Intelligence Research Institute (IIIA-CSIC).
