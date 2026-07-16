@@ -47,14 +47,35 @@ python3 analyze.py                   # every table/figure number, straight from 
 
 ## Re-run the experiment from scratch (needs the models)
 
+**1. Install Ollama** and start it — it serves the five local models over an OpenAI-compatible API. Download from [ollama.com](https://ollama.com), then run `ollama serve` (or launch the desktop app).
+
+**2. Pull the exact models used in the paper** (~27 GB total):
+
 ```bash
-bash setup.sh                        # installs deps and pulls the six local models via Ollama
-export ANTHROPIC_API_KEY=...         # only for the frontier model (Opus 4.8)
+ollama pull gemma2:2b          # 1.6 GB
+ollama pull qwen2.5:7b         # 4.7 GB
+ollama pull llama3.1:8b        # 4.9 GB
+ollama pull mistral-nemo:12b   # 7.1 GB
+ollama pull qwen2.5:14b        # 9.0 GB
+```
+
+Use these exact tags: the harness names models by tag, and a different quantization is a different model. They fit on a 16 GB machine one at a time; the paper's runs used a 16 GB Apple M4 Mac mini, which caps the open-weight tier near 14B. (`bash setup.sh` installs the Python deps and runs these five pulls for you.)
+
+**3. The frontier model (Opus 4.8)** runs through the Anthropic API, not Ollama:
+
+```bash
+export ANTHROPIC_API_KEY=...
+```
+
+**4. Run:**
+
+```bash
+pip install -r requirements.txt
 MODELS="gemma2:2b,qwen2.5:7b,llama3.1:8b,mistral-nemo:12b,qwen2.5:14b,claude-opus-4-8" \
   N_RUNS=3 ROUNDS=3 python3 harness.py
 ```
 
-The local models run through [Ollama](https://ollama.com)'s OpenAI-compatible endpoint (`http://localhost:11434/v1`); the frontier model runs through the Anthropic OpenAI-compatible endpoint. Model outputs are stochastic, so exact per-cell rates vary run to run; the direction and size of the Forced-vs-Provided gap are stable.
+The local models are reached at `http://localhost:11434/v1` (Ollama's OpenAI-compatible endpoint); the frontier model through the Anthropic OpenAI-compatible endpoint. To use only the local models, drop `claude-opus-4-8` from `MODELS` and no API key is needed. Model outputs are stochastic, so exact per-cell rates vary run to run; the direction and size of the Forced-vs-Provided gap are stable.
 
 ## The mechanism, briefly
 
