@@ -17,7 +17,9 @@ Corpus, deterministic oracle, and reproduction harness for the paper.
 
 ## The result in one line
 
-Two LLM agents from different organizations must build an integration, and the fact that makes it correct is held by the other side. **Given that fact, capable models build the integration correctly 89% of the time. Forbidden to ask and forced to commit, the same models ship an adapter that runs clean and returns the wrong value — a _silent failure_ — 69% of the time.** Naming the underspecified field does not lower that rate (76%): the fact is *absent*, not merely unmarked. Capability does not close the gap; what closes it is surfacing the missing fact, and that behavior does not track model scale.
+Two code agents from different organizations must build an integration, and the fact that makes it correct is held by the other side. **Given that fact, capable models build the integration correctly 89% of the time. Forbidden to ask and forced to commit, the same models ship an adapter that runs clean and returns the wrong value (a _silent failure_) 69% of the time.** Naming the underspecified field does not lower that rate (76%): the fact is *absent*, not merely unmarked. Capability does not close the gap; what closes it is surfacing the missing fact, and that behavior does not track model scale.
+
+**Robustness.** The effect is not a per-task coding artifact. Restricting to model–task cells where the model built the adapter correctly when handed the fact (Provided 3/3 on that task), the silent-failure rate under Forced holds at **39/51 = 0.76 (95% CI 0.63–0.86)**, above the pooled rate. The stricter the per-task capability gate, the higher the silent-failure rate. `analyze.py` reproduces this.
 
 Deterministic oracle, **no LLM judge**. Six models from 2B to a frontier system (Opus 4.8). Every number in the paper is regenerated from the shipped run by `analyze.py`, with no models and no API keys.
 
@@ -41,7 +43,7 @@ python3 test_scoring.py              # the scoring passes its unit tests
 python3 analyze.py                   # every table/figure number, straight from the shipped run
 ```
 
-`analyze.py` prints Table 1, the Figure 1 values (89% / 69% / 76% / 53%), and the concentration of silent failure on the irreducible gaps (0.69) versus the inferable controls (0.22).
+`analyze.py` prints Table 1, the Figure 1 values (89% / 69% / 76% / 53%), the concentration of silent failure on the irreducible gaps versus the inferable controls, and the per-cell capability-gated rate with Wilson confidence intervals (39/51 = 0.76 [0.63–0.86]).
 
 ## Re-run the experiment from scratch (needs the models)
 
