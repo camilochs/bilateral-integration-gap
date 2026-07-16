@@ -60,4 +60,4 @@ The failure is not a lack of skill. It is a fact that lives on the far side of t
 
 ## License
 
-[MIT](LICENSE) © 2026 Camilo Chacón Sartori — Artificial Intelligence Research Institute (IIIA-CSIC).
+[MIT](LICENSE) © 2026 Camilo Chacón Sartori — Apeiron Intelligence.
