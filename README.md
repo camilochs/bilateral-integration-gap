@@ -1,7 +1,7 @@
 <div align="center">
 
-# Capability Does Not Close the Gap
-### Silent Failure in Cross-Organizational LLM Integration
+# When LLM Integrators Cannot Ask
+### Silent Failure under Split Specifications
 
 Corpus, deterministic oracle, and reproduction harness for the paper.
 
