@@ -9,7 +9,7 @@ Corpus, deterministic oracle, and reproduction harness for the paper.
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-2E9C8E.svg)](https://www.python.org/)
 [![Reproducible](https://img.shields.io/badge/numbers-reproducible%20offline-7E5AA6.svg)](#reproduce-the-paper-in-30-seconds-no-models-needed)
 
-<img src="figures/fig1.png" width="640" alt="Outcomes by condition for capable models on the irreducible gaps.">
+<img src="figures/fig1.png" width="800" alt="Two agents across an organizational boundary. Agent A holds the reconciling fact (dates are day-first) that Agent B needs and cannot see. If B asks and obtains it, the adapter is grounded and correct (89% given the fact); if B commits without it, the adapter runs clean and returns the wrong value, a silent failure (69% forced to commit).">
 
 </div>
 
@@ -18,6 +18,10 @@ Corpus, deterministic oracle, and reproduction harness for the paper.
 ## The result in one line
 
 Two code agents from different organizations must build an integration, and the fact that makes it correct is held by the other side. **Given that fact, capable models build the integration correctly 89% of the time. Forbidden to ask and forced to commit, the same models ship an adapter that runs clean and returns the wrong value (a _silent failure_) 69% of the time.** Naming the underspecified field does not lower that rate (76%): the fact is *absent*, not merely unmarked. Capability does not close the gap; what closes it is surfacing the missing fact, and that behavior does not track model scale.
+
+<div align="center">
+<img src="figures/fig2.png" width="560" alt="Outcomes by condition for capable models on the irreducible gaps: Provided 89% correct, Forced 69% silent failure, Forced-flagged 76% silent, Dialogue 53% correct.">
+</div>
 
 **Robustness.** The effect is not a per-task coding artifact. Restricting to model–task cells where the model built the adapter correctly when handed the fact (Provided 3/3 on that task), the silent-failure rate under Forced holds at **39/51 = 0.76 (95% CI 0.63–0.86)**, above the pooled rate. The stricter the per-task capability gate, the higher the silent-failure rate. `analyze.py` reproduces this.
 
