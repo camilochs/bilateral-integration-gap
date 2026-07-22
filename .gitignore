@@ -7,3 +7,9 @@ venv/
 models/
 _*.log
 .DS_Store
+
+# reproduce.sh regenerates these at repo root from results/ — canonical copies live in results/
+/_merged_results.json
+/_paper_numbers.json
+/_qualitative_report.json
+/paper_jss/

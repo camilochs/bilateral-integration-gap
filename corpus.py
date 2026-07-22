@@ -259,6 +259,488 @@ TASKS = [
     },
 ]
 
+# ════════════════════════════ subset API: API-derived tasks (T9–T24) ════════════════════════════
+# Modeled on DOCUMENTED conventions of real public-API surfaces (no live API calls): the hidden
+# fact in each task is a convention that really ships in production interfaces. T9–T20 are
+# irreducible (the sample cannot reveal the convention); T21–T24 are inferable controls.
+
+from datetime import date as _date, timedelta as _timedelta
+
+# ── T9: PSP minor units — zero-decimal currencies (Stripe-style): JPY amounts are ALREADY whole yen ──
+_ZERO_DECIMAL = {"JPY", "KRW"}
+def ref_psp(a):
+    amt = a["amount"]
+    return {"value": float(amt) if a["currency"] in _ZERO_DECIMAL else round(amt / 100.0, 2),
+            "currency": a["currency"]}
+def naive_psp(a):
+    return {"value": round(a["amount"] / 100.0, 2), "currency": a["currency"]}   # B divides everything
+
+# ── T10: pagination base — A zero-based page index (search-engine style), B one-based ──
+def ref_page(a):
+    return {"pageNumber": a["page"] + 1}
+def naive_page(a):
+    return {"pageNumber": a["page"]}                # B assumes both sides count alike
+
+# ── T11: shipment weight — A pounds (US carrier), B kilograms ──
+def ref_weight(a):
+    return {"kg": round(a["weight"] * 0.45359237, 3)}
+def naive_weight(a):
+    return {"kg": float(a["weight"])}               # B assumes it's already metric
+
+# ── T12: equity quote — A quotes in GBX (pence sterling, LSE convention), B expects GBP ──
+def ref_quote(a):
+    return {"gbp": round(a["price"] / 100.0, 4)}
+def naive_quote(a):
+    return {"gbp": float(a["price"])}               # B reads the number as pounds
+
+# ── T13: inventory — absent stock field means NOT TRACKED (not zero) ──
+def ref_stock(a):
+    tracked = "stock" in a
+    return {"sku": a["sku"], "qty": a.get("stock", 0), "tracked": tracked}
+def naive_stock(a):
+    return {"sku": a["sku"], "qty": a.get("stock", 0), "tracked": True}   # B treats absent as qty 0, tracked
+
+# ── T14: country codes — A uses legacy codes ("UK"), B requires ISO 3166-1 alpha-2 ("GB") ──
+_LEGACY_CC = {"UK": "GB"}
+def ref_cc(a):
+    return {"country": _LEGACY_CC.get(a["country"], a["country"])}
+def naive_cc(a):
+    return {"country": a["country"]}                # B forwards the code untouched
+
+# ── T15: price basis — A prices are VAT-INCLUSIVE (EU B2C display), B ledger needs NET at 21% ──
+def ref_vat(a):
+    return {"net": round(a["price"] / 1.21, 2)}
+def naive_vat(a):
+    return {"net": float(a["price"])}               # B assumes prices come ex-VAT
+
+# ── T16: phone numbers — A stores national digits (country +34 implied), B requires E.164 ──
+def ref_phone(a):
+    return {"e164": "+34" + a["phone"]}
+def naive_phone(a):
+    return {"e164": a["phone"]}                     # B assumes numbers arrive fully qualified
+
+# ── T17: spreadsheet dates — A exports Excel serial dates (epoch 1899-12-30), B assumes Unix-day counts ──
+def ref_xldate(a):
+    return {"date": (_date(1899, 12, 30) + _timedelta(days=a["serial"])).isoformat()}
+def naive_xldate(a):
+    return {"date": (_date(1970, 1, 1) + _timedelta(days=a["serial"])).isoformat()}
+
+# ── T18: person names — A sends family-name-first ("Yamada Taro"), B splits assuming given-first ──
+def ref_name(a):
+    family, given = a["full_name"].split(" ", 1)
+    return {"given": given, "family": family}
+def naive_name(a):
+    given, family = a["full_name"].split(" ", 1)
+    return {"given": given, "family": family}
+
+# ── T19: order quantity — A counts PACKS of 12 (wholesale EDI), B needs consumer UNITS ──
+def ref_pack(a):
+    return {"units": a["quantity"] * 12}
+def naive_pack(a):
+    return {"units": a["quantity"]}                 # B reads quantity as units
+
+# ── T20: sensor temperature — A reports Fahrenheit (US industrial default), B stores Celsius ──
+def ref_temp(a):
+    return {"celsius": round((a["temp"] - 32) * 5.0 / 9.0, 2)}
+def naive_temp(a):
+    return {"celsius": float(a["temp"])}            # B assumes Celsius
+
+# ── T21 (control): epoch milliseconds — 13-digit magnitude reveals the unit ──
+def ref_epoch(a):
+    return {"epoch_s": a["ts"] // 1000}
+def naive_epoch(a):
+    return {"epoch_s": a["ts"]}                     # B assumes seconds
+
+# ── T22 (control): "1"/"0" string flag — bool(str) is truthy for "0" ──
+def ref_flag10(a):
+    return {"enabled": a["enabled"] == "1"}
+def naive_flag10(a):
+    return {"enabled": bool(a["enabled"])}
+
+# ── T23 (control): ISO alpha-3 country ("ESP") — sample reveals the format; B needs alpha-2 ──
+_A3_A2 = {"ESP": "ES", "FRA": "FR", "DEU": "DE", "USA": "US"}
+def ref_a3(a):
+    return {"country": _A3_A2[a["country"]]}
+def naive_a3(a):
+    return {"country": a["country"]}
+
+# ── T24 (control): decimal comma ("89,90") — B strips the comma as a thousands separator ──
+def ref_dcomma(a):
+    return {"price": float(a["price"].replace(",", "."))}
+def naive_dcomma(a):
+    return {"price": float(a["price"].replace(",", ""))}
+
+TASKS += [
+    {
+        "id": "T9_psp_minor_units",
+        "domain": "payment-gateway settlement",
+        "a_context": ("Your payment-gateway charge object is {\"amount\": int, \"currency\": str}. amount is "
+                      "expressed in the SMALLEST unit of the currency: cents for EUR/USD, BUT for zero-decimal "
+                      "currencies (JPY, KRW) the amount is already the whole-unit value. This follows your "
+                      "processor's convention and cannot change."),
+        "b_context": ("You feed an accounting system that requires {\"value\": float, \"currency\": str} in "
+                      "MAJOR currency units (e.g. euros, yen), decimals allowed."),
+        "mismatches": [{
+            "field": "amount",
+            "a_semantics": "minor units, EXCEPT zero-decimal currencies (JPY/KRW) which are already major units",
+            "b_semantics": "major units; assumes a uniform divide-by-100 works for every currency",
+            "surfacing_question": "Is amount always in hundredths, or are some currencies zero-decimal?",
+            "probe_keywords": ["zero-decimal", "jpy", "yen", "minor unit", "smallest unit", "divide", "/100",
+                               "currency-dependent", "exponent"],
+            "inferable": False,   # an EUR sample cannot reveal the JPY exception
+        }],
+        "ref": ref_psp, "naive": naive_psp,
+        "oracle": [
+            {"a": {"amount": 2599, "currency": "EUR"}, "discriminating": False},  # /100 correct: silent pass
+            {"a": {"amount": 5000, "currency": "JPY"}, "discriminating": True},   # 5000 yen, not 50.00
+            {"a": {"amount": 120000, "currency": "KRW"}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T10_page_base",
+        "domain": "search-index pagination bridge",
+        "a_context": ("Your search API paginates with {\"page\": int} and pages are ZERO-BASED: page 0 is the "
+                      "first page of results (an offset-style index, as in typical search engines)."),
+        "b_context": ("You drive a storefront whose paging widget requires {\"pageNumber\": int} where 1 is "
+                      "the first page. Page numbers below 1 are invalid."),
+        "mismatches": [{
+            "field": "page",
+            "a_semantics": "zero-based page index",
+            "b_semantics": "one-based page number; assumes both sides count the same way",
+            "surfacing_question": "Is page zero-based or one-based?",
+            "probe_keywords": ["zero-based", "one-based", "first page", "0 or 1", "index", "offset", "starts at"],
+            "inferable": False,   # a sample like page=3 is valid under either convention
+        }],
+        "ref": ref_page, "naive": naive_page,
+        "oracle": [
+            # page 3 FIRST: it becomes the sample (no benign case) and is valid under either base;
+            # a page-0 sample would leak the zero-based convention and break irreducibility.
+            {"a": {"page": 3}, "discriminating": True},
+            {"a": {"page": 0}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T11_weight_units",
+        "domain": "cross-border shipping",
+        "a_context": ("Your carrier API reports parcel {\"weight\": float} in POUNDS (lb), the domestic "
+                      "convention of your US logistics stack. The field carries no unit suffix."),
+        "b_context": ("Your customs declaration system requires {\"kg\": float} in kilograms, three decimals."),
+        "mismatches": [{
+            "field": "weight",
+            "a_semantics": "pounds (lb)",
+            "b_semantics": "kilograms; assumes the number is already metric",
+            "surfacing_question": "Is weight in pounds or kilograms?",
+            "probe_keywords": ["pound", "lb", "kg", "kilogram", "unit", "metric", "imperial", "convert", "0.45"],
+            "inferable": False,   # a bare number like 10.5 does not reveal its unit
+        }],
+        "ref": ref_weight, "naive": naive_weight,
+        "oracle": [
+            {"a": {"weight": 0}, "discriminating": False},     # 0 lb == 0 kg: silent pass
+            {"a": {"weight": 10.0}, "discriminating": True},
+            {"a": {"weight": 2.2}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T12_gbx_pence",
+        "domain": "equity market data",
+        "a_context": ("Your market-data feed quotes London-listed equities as {\"price\": float} in GBX — "
+                      "pence sterling, the LSE convention (a price of 4550 means 45.50 pounds)."),
+        "b_context": ("Your portfolio valuation service requires {\"gbp\": float} in POUNDS sterling."),
+        "mismatches": [{
+            "field": "price",
+            "a_semantics": "GBX (pence); 100 GBX = 1 GBP",
+            "b_semantics": "pounds; assumes the quote is already GBP",
+            "surfacing_question": "Is price quoted in pounds or in pence (GBX)?",
+            "probe_keywords": ["gbx", "pence", "penny", "pounds", "gbp", "lse", "quote unit", "/100"],
+            "inferable": False,   # 4550 is a plausible pound price for some listings
+        }],
+        "ref": ref_quote, "naive": naive_quote,
+        "oracle": [
+            {"a": {"price": 0}, "discriminating": False},
+            {"a": {"price": 4550}, "discriminating": True},    # 45.50 GBP, not 4550 GBP
+            {"a": {"price": 87.5}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T13_absent_stock",
+        "domain": "inventory federation",
+        "a_context": ("Your catalog item is {\"sku\": str, \"stock\": int} but stock is OPTIONAL: when the "
+                      "field is ABSENT the item is NOT STOCK-TRACKED (made to order) — absence does not mean "
+                      "zero. When present (even as 0) the item is tracked."),
+        "b_context": ("Your warehouse system requires {\"sku\": str, \"qty\": int, \"tracked\": bool} with all "
+                      "fields always present."),
+        "mismatches": [{
+            "field": "stock",
+            "a_semantics": "absent field = not tracked (made to order); present (incl. 0) = tracked",
+            "b_semantics": "assumes every item is tracked and a missing quantity is just 0",
+            "surfacing_question": "What does a missing stock field mean — zero stock, or not tracked at all?",
+            "probe_keywords": ["absent", "missing", "optional", "tracked", "made to order", "null", "omitted",
+                               "not present"],
+            "inferable": False,   # the sample shows a present stock; absence semantics is A's private fact
+        }],
+        "ref": ref_stock, "naive": naive_stock,
+        "oracle": [
+            {"a": {"sku": "A1", "stock": 7}, "discriminating": False},
+            {"a": {"sku": "B2", "stock": 0}, "discriminating": False},   # present zero: tracked in both
+            {"a": {"sku": "C3"}, "discriminating": True},                # absent: tracked flag silently wrong
+        ],
+    },
+    {
+        "id": "T14_legacy_country",
+        "domain": "customer-data onboarding",
+        "a_context": ("Your CRM exports {\"country\": str} using the company's LEGACY code list, which "
+                      "predates ISO adoption: the United Kingdom is stored as \"UK\" (not \"GB\"). Most other "
+                      "codes coincide with ISO 3166-1 alpha-2."),
+        "b_context": ("Your compliance screening service requires {\"country\": str} as STRICT ISO 3166-1 "
+                      "alpha-2; \"UK\" is not a valid ISO code (the United Kingdom is \"GB\")."),
+        "mismatches": [{
+            "field": "country",
+            "a_semantics": "legacy list: United Kingdom = \"UK\"; others match ISO",
+            "b_semantics": "strict ISO alpha-2; assumes incoming codes are already ISO",
+            "surfacing_question": "Do your country codes follow ISO exactly — how is the United Kingdom coded?",
+            "probe_keywords": ["uk", "gb", "iso", "3166", "legacy", "code list", "united kingdom", "mapping"],
+            "inferable": False,   # a sample like "US" or "DE" cannot reveal the UK divergence
+        }],
+        "ref": ref_cc, "naive": naive_cc,
+        "oracle": [
+            {"a": {"country": "US"}, "discriminating": False},
+            {"a": {"country": "DE"}, "discriminating": False},
+            {"a": {"country": "UK"}, "discriminating": True},   # forwarded "UK" silently fails ISO screening
+        ],
+    },
+    {
+        "id": "T15_vat_inclusive",
+        "domain": "retail-to-ledger pricing",
+        "a_context": ("Your storefront exposes {\"price\": float} as the consumer-facing price, which by "
+                      "EU B2C display rules is VAT-INCLUSIVE (your VAT rate is 21%)."),
+        "b_context": ("Your accounting ledger books revenue NET of tax: it requires {\"net\": float}, the "
+                      "price excluding VAT, two decimals."),
+        "mismatches": [{
+            "field": "price",
+            "a_semantics": "gross, VAT (21%) included",
+            "b_semantics": "assumes the incoming price is already net of tax",
+            "surfacing_question": "Is price tax-inclusive or tax-exclusive, and at what VAT rate?",
+            "probe_keywords": ["vat", "tax", "inclusive", "exclusive", "gross", "net", "21", "iva"],
+            "inferable": False,   # a bare price cannot reveal whether tax is inside
+        }],
+        "ref": ref_vat, "naive": naive_vat,
+        "oracle": [
+            {"a": {"price": 0}, "discriminating": False},
+            {"a": {"price": 121.0}, "discriminating": True},   # net 100.00, not 121.00
+            {"a": {"price": 59.99}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T16_phone_e164",
+        "domain": "CRM telephony sync",
+        "a_context": ("Your customer records store {\"phone\": str} as NATIONAL digits only (e.g. "
+                      "\"612345678\"): every customer is in Spain, so the +34 country prefix is implied and "
+                      "never stored."),
+        "b_context": ("Your SMS provider requires {\"e164\": str} in full E.164 form with a leading + and "
+                      "country code (e.g. \"+34612345678\"). Numbers without a prefix are rejected or "
+                      "misrouted."),
+        "mismatches": [{
+            "field": "phone",
+            "a_semantics": "national digits; +34 implied by an out-of-band assumption",
+            "b_semantics": "full E.164; assumes numbers arrive fully qualified",
+            "surfacing_question": "Do stored numbers include a country prefix — which country are they from?",
+            "probe_keywords": ["prefix", "country code", "+34", "e.164", "e164", "international", "spain",
+                               "national"],
+            "inferable": False,   # nine bare digits do not reveal the country
+        }],
+        "ref": ref_phone, "naive": naive_phone,
+        "oracle": [
+            {"a": {"phone": "612345678"}, "discriminating": True},
+            {"a": {"phone": "934020100"}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T17_excel_serial",
+        "domain": "spreadsheet export ingestion",
+        "a_context": ("Your finance team exports records as {\"serial\": int} where serial is the SPREADSHEET "
+                      "date serial (Excel convention: day counts anchored so that 46113 is 2026-04-01; the "
+                      "effective epoch is 1899-12-30)."),
+        "b_context": ("Your data warehouse requires {\"date\": \"YYYY-MM-DD\"}. Your own tooling habitually "
+                      "treats integer day counts as days since the Unix epoch (1970-01-01)."),
+        "mismatches": [{
+            "field": "serial",
+            "a_semantics": "Excel date serial, epoch 1899-12-30",
+            "b_semantics": "assumes days since Unix epoch 1970-01-01",
+            "surfacing_question": "What epoch does the day serial count from?",
+            "probe_keywords": ["epoch", "1900", "1899", "excel", "serial", "unix", "1970", "day count",
+                               "anchored"],
+            "inferable": False,   # a five-digit integer is plausible under either epoch
+        }],
+        "ref": ref_xldate, "naive": naive_xldate,
+        "oracle": [
+            {"a": {"serial": 46113}, "discriminating": True},
+            {"a": {"serial": 46200}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T18_name_order",
+        "domain": "HR directory import",
+        "a_context": ("Your employee feed provides {\"full_name\": str} written FAMILY-NAME FIRST, the "
+                      "convention of your Japanese HR system: \"Yamada Taro\" is family name Yamada, given "
+                      "name Taro."),
+        "b_context": ("Your directory requires {\"given\": str, \"family\": str} as separate fields. Names in "
+                      "your locale are conventionally written given-name first."),
+        "mismatches": [{
+            "field": "full_name",
+            "a_semantics": "family name first",
+            "b_semantics": "splits assuming given name first",
+            "surfacing_question": "Is full_name written family-first or given-first?",
+            "probe_keywords": ["family", "given", "surname", "first name", "last name", "order", "japanese",
+                               "name order"],
+            "inferable": False,   # "Yamada Taro" parses under either convention
+        }],
+        "ref": ref_name, "naive": naive_name,
+        "oracle": [
+            {"a": {"full_name": "Lee Lee"}, "discriminating": False},     # identical either way: silent pass
+            {"a": {"full_name": "Yamada Taro"}, "discriminating": True},
+            {"a": {"full_name": "Sato Hanako"}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T19_pack_quantity",
+        "domain": "wholesale order relay",
+        "a_context": ("Your wholesale EDI feed sends {\"quantity\": int} counted in PACKS: your products ship "
+                      "in fixed cases of 12 consumer units, and quantity is the number of cases."),
+        "b_context": ("Your marketplace listing system requires {\"units\": int}, the number of individual "
+                      "consumer units."),
+        "mismatches": [{
+            "field": "quantity",
+            "a_semantics": "packs (cases of 12 units)",
+            "b_semantics": "assumes quantity already counts individual units",
+            "surfacing_question": "Does quantity count individual units or packs — and how many units per pack?",
+            "probe_keywords": ["pack", "case", "carton", "units per", "12", "each", "inner", "multiplier"],
+            "inferable": False,   # quantity 3 is plausible as either packs or units
+        }],
+        "ref": ref_pack, "naive": naive_pack,
+        "oracle": [
+            {"a": {"quantity": 0}, "discriminating": False},
+            {"a": {"quantity": 3}, "discriminating": True},    # 36 units, not 3
+            {"a": {"quantity": 10}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T20_temp_scale",
+        "domain": "industrial IoT telemetry",
+        "a_context": ("Your plant sensors report {\"temp\": float} in DEGREES FAHRENHEIT, the default of "
+                      "your US-sourced monitoring hardware. No unit is transmitted."),
+        "b_context": ("Your process-control dashboard stores {\"celsius\": float}, two decimals. Process "
+                      "temperatures at this plant range roughly from ambient to a few hundred degrees, so "
+                      "readings are plausible on either scale."),
+        "mismatches": [{
+            "field": "temp",
+            "a_semantics": "Fahrenheit",
+            "b_semantics": "assumes Celsius",
+            "surfacing_question": "Is temp in Fahrenheit or Celsius?",
+            "probe_keywords": ["fahrenheit", "celsius", "scale", "degrees", "unit", "convert", "f or c"],
+            "inferable": False,   # 160.0 is a plausible industrial reading on either scale
+        }],
+        "ref": ref_temp, "naive": naive_temp,
+        "oracle": [
+            {"a": {"temp": -40.0}, "discriminating": False},   # the one point where F == C: silent pass
+            {"a": {"temp": 160.0}, "discriminating": True},
+            {"a": {"temp": 72.0}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T21_epoch_ms",
+        "domain": "telemetry timestamp bridge",
+        "a_context": ("Your event bus emits {\"ts\": int} as Unix epoch MILLISECONDS (13 digits for "
+                      "present-day times), the JavaScript convention of your stack."),
+        "b_context": ("Your metrics store requires {\"epoch_s\": int} in Unix epoch SECONDS."),
+        "mismatches": [{
+            "field": "ts",
+            "a_semantics": "epoch milliseconds",
+            "b_semantics": "epoch seconds; a 13-digit value is three orders of magnitude off",
+            "surfacing_question": "Is ts in seconds or milliseconds?",
+            "probe_keywords": ["millisecond", "ms", "seconds", "13 digits", "epoch", "divide", "1000"],
+            "inferable": True,    # 13-digit magnitude reveals milliseconds for any current date
+        }],
+        "ref": ref_epoch, "naive": naive_epoch,
+        "oracle": [
+            # no benign case: the sample must be a 13-digit value — that magnitude IS the inferable
+            # signal (a ts=0 sample would hide it and silently break the control's rationale).
+            {"a": {"ts": 1784544000000}, "discriminating": True},
+            {"a": {"ts": 1800000000000}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T22_flag_10",
+        "domain": "feature-flag sync",
+        "a_context": ("Your config store keeps {\"enabled\": str} as the STRING \"1\" for on and \"0\" for "
+                      "off (a key-value store limitation)."),
+        "b_context": ("Your runtime requires {\"enabled\": bool} — a real JSON boolean."),
+        "mismatches": [{
+            "field": "enabled",
+            "a_semantics": "string \"1\"/\"0\"",
+            "b_semantics": "JSON bool; bool(str) is truthy for the non-empty string \"0\"",
+            "surfacing_question": "How is enabled encoded — what are its possible string values?",
+            "probe_keywords": ["\"0\"", "\"1\"", "string", "truthy", "boolean", "encode", "values", "cast"],
+            "inferable": True,    # a "1"/"0" flag is a stock pattern; the sample reveals the encoding
+        }],
+        "ref": ref_flag10, "naive": naive_flag10,
+        "oracle": [
+            {"a": {"enabled": "1"}, "discriminating": False},  # bool("1")==True: silent pass
+            {"a": {"enabled": "0"}, "discriminating": True},   # bool("0")==True: silent WRONG
+        ],
+    },
+    {
+        "id": "T23_alpha3_country",
+        "domain": "trade-document routing",
+        "a_context": ("Your customs feed uses {\"country\": str} as ISO 3166-1 ALPHA-3 codes (\"ESP\", "
+                      "\"FRA\", \"DEU\", \"USA\")."),
+        "b_context": ("Your address validator requires ISO 3166-1 ALPHA-2 (\"ES\", \"FR\", \"DE\", \"US\"). "
+                      "The feed carries only these four markets; no other code ever appears."),
+        "mismatches": [{
+            "field": "country",
+            "a_semantics": "ISO alpha-3",
+            "b_semantics": "ISO alpha-2; forwarding a three-letter code fails validation",
+            "surfacing_question": "Are country codes alpha-2 or alpha-3?",
+            "probe_keywords": ["alpha-2", "alpha-3", "three-letter", "two-letter", "iso", "3166", "convert"],
+            "inferable": True,    # the sample value "ESP" reveals the format; the ISO table is standard knowledge
+        }],
+        "ref": ref_a3, "naive": naive_a3,
+        "oracle": [
+            {"a": {"country": "ESP"}, "discriminating": True},
+            {"a": {"country": "DEU"}, "discriminating": True},
+        ],
+    },
+    {
+        "id": "T24_decimal_comma",
+        "domain": "invoice ingestion",
+        "a_context": ("Your invoicing partner exports {\"price\": str} with EUROPEAN decimal notation: a "
+                      "COMMA is the decimal separator (\"89,90\" means 89.90). No thousands separators are "
+                      "used."),
+        "b_context": ("Your parser requires {\"price\": float}. Your own locale uses the comma as a "
+                      "THOUSANDS separator, so your habitual cleanup strips commas before parsing."),
+        "mismatches": [{
+            "field": "price",
+            "a_semantics": "decimal comma (\"89,90\" = 89.90)",
+            "b_semantics": "strips commas as thousands separators (\"89,90\" -> 8990.0)",
+            "surfacing_question": "Is the comma a decimal separator or a thousands separator?",
+            "probe_keywords": ["comma", "decimal", "separator", "thousands", "locale", "89,90", "notation"],
+            "inferable": True,    # "89,90" with two trailing digits reveals the decimal-comma convention
+        }],
+        "ref": ref_dcomma, "naive": naive_dcomma,
+        "oracle": [
+            # no benign case: the sample must SHOW a comma value ("89,90") — the two trailing digits
+            # are the inferable signal (a comma-free sample like "120" would hide the convention).
+            {"a": {"price": "89,90"}, "discriminating": True},  # 89.90 vs 8990.0: silent wrong
+            {"a": {"price": "5,25"}, "discriminating": True},
+        ],
+    },
+]
+
+# subset annotation: SYN = original synthetic eight (frozen), API = API-derived expansion
+_SYN_IDS = {"T1_order_date", "T2_money_units", "T3_timezone", "T4_status_enum",
+            "T5_null_default", "T6_bool_encoding", "T7_id_shape", "T8_cardinality"}
+for _t in TASKS:
+    _t["subset"] = "SYN" if _t["id"] in _SYN_IDS else "API"
+
 
 # ─────────────────────────── deterministic oracle ───────────────────────────
 def _eq(x, y):

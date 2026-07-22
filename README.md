@@ -1,15 +1,16 @@
 <div align="center">
 
 # Code Agents under Split Specifications
-### Capability Does Not Prevent Silent Failure
+### An Empirical Study of Silent Failure in Cross-Organizational Integration
 
-Corpus, deterministic oracle, and reproduction harness for the paper.
+Corpus, deterministic oracle, frozen runs, and reproduction harness for the paper
+(Journal of Systems and Software submission).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-C23E63.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-2E9C8E.svg)](https://www.python.org/)
-[![Reproducible](https://img.shields.io/badge/numbers-reproducible%20offline-7E5AA6.svg)](#reproduce-the-paper-in-30-seconds-no-models-needed)
+[![Reproducible](https://img.shields.io/badge/numbers-reproducible%20offline-7E5AA6.svg)](#reproduce-the-paper-one-command-no-models-needed)
 
-<img src="figures/fig1.png" width="800" alt="Two agents across an organizational boundary. Agent A holds the reconciling fact (dates are day-first) that Agent B needs and cannot see. If B asks and obtains it, the adapter is grounded and correct (89% given the fact); if B commits without it, the adapter runs clean and returns the wrong value, a silent failure (69% forced to commit).">
+<img src="figures/fig1.png" width="800" alt="Two agents across an organizational boundary. Agent A holds the reconciling fact (dates are day-first) that Agent B needs and cannot see. If B asks and obtains it, the adapter is grounded and correct; if B commits without it, the adapter runs clean and returns the wrong value, a silent failure.">
 
 </div>
 
@@ -17,43 +18,45 @@ Corpus, deterministic oracle, and reproduction harness for the paper.
 
 ## The result in one line
 
-Two code agents from different organizations must build an integration, and the fact that makes it correct is held by the other side. **Given that fact, capable models build the integration correctly 89% of the time. Forbidden to ask and forced to commit, the same models ship an adapter that runs clean and returns the wrong value (a _silent failure_) 69% of the time.** Naming the underspecified field does not lower that rate (76%): the fact is *absent*, not merely unmarked. Capability does not close the gap; what closes it is surfacing the missing fact, and that behavior does not track model scale.
+Two code agents from different organizations must build an integration, and the fact that makes it correct is held by the other side. **Given that fact, the capable models build the integration correctly 90% of the time. Forbidden to ask and forced to commit, the same models ship an adapter that runs clean and returns the wrong value (a _silent failure_) 61% of the time** (task-cluster 95% CI 55–67%). Naming the underspecified field does not lower that rate (it rises to 69%): the fact is *absent*, not merely unmarked. Capability does not close the gap; what closes it is surfacing the missing fact, and that behavior does not track model scale.
 
-<div align="center">
-<img src="figures/fig2.png" width="560" alt="Outcomes by condition for capable models on the irreducible gaps: Provided 89% correct, Forced 69% silent failure, Forced-flagged 76% silent, Dialogue 53% correct.">
-</div>
+**What this contains.** The full study: **24 tasks** (8 synthetic + 16 modeled on documented public-API conventions), **7 conditions**, **7 models** (five local open-weight, 2B–14B, and two frontier systems from different providers: Opus 4.8 and GPT-5.6-sol), and task-cluster bootstrap confidence intervals. The two mechanism conditions (answers-only dialogue, gated-commit mitigation) decompose the recovery channel. Deterministic oracle, **no model-based evaluation**. Every number in the paper regenerates from the frozen run with no models and no API keys.
 
-**Robustness.** The effect is not a per-task coding artifact. Restricting to model–task cells where the model built the adapter correctly when handed the fact (Provided 3/3 on that task), the silent-failure rate under Forced holds at **39/51 = 0.76 (95% CI 0.63–0.86)**, above the pooled rate. The stricter the per-task capability gate, the higher the silent-failure rate. `analyze.py` reproduces this.
+## Reproduce the paper (one command, no models needed)
 
-Deterministic oracle, **no LLM judge**. Six models from 2B to a frontier system (Opus 4.8). Every number in the paper is regenerated from the shipped run by `analyze.py`, with no models and no API keys.
+```bash
+./reproduce.sh
+```
+
+This runs offline from the frozen run in `results/`. The bootstrap is **seeded (seed=7)**, so the confidence intervals reproduce exactly. The script regenerates `_paper_numbers.json` and confirms it is **byte-identical** to the shipped `results/_paper_numbers.json` — every value in the paper is reproduced from the frozen record alone. No network, no API keys, standard library only.
+
+To regenerate the paper's tables and figures (LaTeX includes) as well:
+
+```bash
+python3 make_apparatus.py            # writes paper_jss/generated/*.tex from the frozen run
+```
 
 ## What this repository is
 
 | File | What it is |
 |---|---|
-| **`corpus.py`** | The 8 bilateral integration tasks. Each gives System A's context and System B's context (asymmetric partial knowledge) and plants at least one hidden mismatch — date order, unit scale, timezone, a legacy enum map, a null convention, a boolean encoding, an id shape, list-vs-single cardinality. **Self-validating**: run it and it proves each gap is solvable once surfaced, silent on benign inputs, breaking on the discriminating ones. |
+| **`corpus.py`** | The 24 bilateral integration tasks. Each gives System A's context and System B's context (asymmetric partial knowledge) and plants at least one hidden mismatch. `subset` marks SYN (synthetic) vs API (documented real-interface conventions: zero-decimal currencies, GBX pence quotes, spreadsheet date serials, legacy country codes, VAT-inclusive prices, E.164 telephony, …). **Self-validating**: `python3 corpus.py` proves each gap is solvable once surfaced, silent on benign inputs, breaking on the discriminating ones. |
 | **`scoring.py`** | The strict outcome definition. A *silent failure* = the adapter ran on every case with **no exception**, passed every benign case, and returned a **wrong value** on a discriminating case. A crash anywhere is loud, never silent. |
-| **`harness.py`** | The experiment: five conditions × six models × three runs. `provided` (fact given = capability ceiling), `forced` (commit, cannot ask), `forced_flagged` (the ambiguous field is named, still cannot ask), `nodialogue`, `dialogue`. |
+| **`harness.py`** | The experiment: **7 conditions** × 7 models. `provided` (fact given = capability ceiling), `nodialogue` (asks but no one answers), `forced` (commit, cannot ask), `forced_flagged` (the ambiguous field is named, still cannot ask), `dialogue_answers_only` (provider answers only what is asked), `dialogue_volunteers` (provider may volunteer), `mitigation` (gated commit: build only if the fact is established, else abstain). Checkpoints every 25 units and resumes. |
 | **`test_scoring.py`** | Unit tests for the scoring, including the edge cases (a wrong value on one case plus a crash on another is *loud*, not silent). |
-| **`analyze.py`** | Regenerates the paper's tables and figure numbers straight from `results/harness_results.json`. **No models, no keys.** |
-| **`results/harness_results.json`** | The definitive run. Full raw record per unit: per-case outcomes, the generated adapter code, the raw model output, and the decoding temperature — so any later question is a re-analysis, not a re-generation. |
-
-## Reproduce the paper in 30 seconds (no models needed)
-
-```bash
-pip install -r requirements.txt      # only needs nothing for these three; openai is for re-running
-python3 corpus.py                    # the corpus proves itself well-formed
-python3 test_scoring.py              # the scoring passes its unit tests
-python3 analyze.py                   # every table/figure number, straight from the shipped run
-```
-
-`analyze.py` prints Table 1, the Figure 1 values (89% / 69% / 76% / 53%), the concentration of silent failure on the irreducible gaps versus the inferable controls, and the per-cell capability-gated rate with Wilson confidence intervals (39/51 = 0.76 [0.63–0.86]).
+| **`analyze.py`** | Regenerates every reported number from the frozen run, with per-model + per-cell capability gating, Wilson intervals, and task-cluster bootstrap CIs. `--emit-numbers` writes the machine-readable `_paper_numbers.json`. **No models, no keys.** |
+| **`qualitative.py`** | Transparent (non-LLM) classification of every silent failure into *confident default* / *thorough wrong adapter* / *acknowledged guess*, and of every abstention against each task's surfacing question. |
+| **`merge_runs.py`** | Merges the per-campaign runs into the frozen `results/_merged_results.json` with explicit per-cell provenance, and audits the 5,208-cell grid (no duplicates, no missing/short cells). |
+| **`make_apparatus.py`** | Generates the paper's tables and figures (`paper_jss/generated/*.tex`) from the frozen run. |
+| **`predictions.md`** | The pre-registered predictions (P1–P7), locked before the definitive runs, with the deviation log. |
+| **`results/_merged_results.json`** | **The definitive frozen run**, 5,208 units. Full raw record per unit: per-case outcomes, generated adapter code, raw model output, subset, provenance. Any later question is a re-analysis, not a re-generation. |
+| **`results/campaigns/`** | The raw per-campaign files behind the merge (full provenance). |
 
 ## Re-run the experiment from scratch (needs the models)
 
-**1. Install Ollama** and start it — it serves the five local models over an OpenAI-compatible API. Download from [ollama.com](https://ollama.com), then run `ollama serve` (or launch the desktop app).
+**1. Install [Ollama](https://ollama.com)** and start it (`ollama serve`) — it serves the five local models over an OpenAI-compatible API.
 
-**2. Pull the exact models used in the paper** (~27 GB total):
+**2. Pull the exact model tags** (a different quantization is a different model; ~27 GB total):
 
 ```bash
 ollama pull gemma2:2b          # 1.6 GB
@@ -63,27 +66,33 @@ ollama pull mistral-nemo:12b   # 7.1 GB
 ollama pull qwen2.5:14b        # 9.0 GB
 ```
 
-Use these exact tags: the harness names models by tag, and a different quantization is a different model. They fit on a 16 GB machine one at a time; the paper's runs used a 16 GB Apple M4 Mac mini, which caps the open-weight tier near 14B. (`bash setup.sh` installs the Python deps and runs these five pulls for you.)
+They fit on a 16 GB machine one at a time; the paper's runs used a 16 GB Apple M4 Mac mini, which caps the open-weight tier near 14B.
 
-**3. The frontier model (Opus 4.8)** runs through the Anthropic API, not Ollama:
+**3. The frontier models** run through their providers' OpenAI-compatible endpoints:
 
 ```bash
-export ANTHROPIC_API_KEY=...
+export ANTHROPIC_API_KEY=...     # for claude-opus-4-8
+export OPENAI_API_KEY=...        # for gpt-5.6-sol
 ```
 
-**4. Run:**
+**4. Run** (locals only need no keys — drop the frontier tags from `MODELS`):
 
 ```bash
 pip install -r requirements.txt
-MODELS="gemma2:2b,qwen2.5:7b,llama3.1:8b,mistral-nemo:12b,qwen2.5:14b,claude-opus-4-8" \
-  N_RUNS=3 ROUNDS=3 python3 harness.py
+MODELS="gemma2:2b,qwen2.5:7b,llama3.1:8b,mistral-nemo:12b,qwen2.5:14b" \
+  N_RUNS=5 ROUNDS=3 OUT=_campaign_locals.json python3 harness.py
+python3 merge_runs.py --write     # rebuild the frozen dataset with provenance + grid audit
 ```
 
-The local models are reached at `http://localhost:11434/v1` (Ollama's OpenAI-compatible endpoint); the frontier model through the Anthropic OpenAI-compatible endpoint. To use only the local models, drop `claude-opus-4-8` from `MODELS` and no API key is needed. Model outputs are stochastic, so exact per-cell rates vary run to run; the direction and size of the Forced-vs-Provided gap are stable.
+Model outputs are stochastic, so exact per-cell rates vary run to run; the direction and size of the effects are stable, and all headline comparisons carry task-cluster intervals.
 
 ## The mechanism, briefly
 
-The failure is not a lack of skill. It is a fact that lives on the far side of the interface and is never obtained. `provided` shows the models *can* build the adapter once handed the fact. `forced` withholds it. `forced_flagged` names the ambiguous field so detection is no longer required — and silent failure still does not drop, which is how we know the failure is commitment across genuinely absent information, not a failure to flag it.
+The failure is not a lack of skill. It is a fact that lives on the far side of the interface and is never obtained. `provided` shows the models *can* build the adapter once handed the fact. `forced` withholds it. `forced_flagged` names the ambiguous field so detection is no longer required — and silent failure still does not drop, which is how we know the failure is commitment across genuinely absent information, not a failure to flag it. `dialogue_answers_only` shows that the naked act of asking, with nothing volunteered, is what recovers most of the ceiling; `mitigation` shows that a blanket gated-commit rule removes silent failure but collapses completion on tasks whose convention was actually available.
+
+## Citation
+
+If you use this artifact, please cite the paper (Journal of Systems and Software, under review) and this archived release. A `CITATION.cff` and the Zenodo DOI are added at release.
 
 ## License
 

@@ -1,0 +1,551 @@
+[
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "provided",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "provided",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "provided",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    country = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[country]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    country = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[country]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "nodialogue",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": null,
+  "code": "Wait \u2014 before writing, I should confirm the conventions since I was told not to assume the values.\n\nThe sample shows `{\"country\": \"ESP\"}`, which looks like ISO 3166-1 alpha-3, but I must verify:\n\n1. Is the `country` value always ISO 3166-1 alpha-3 (ESP, FRA, DEU, USA), or could it be another format (numeric codes, full names, etc.)?\n2. Is the `country` key guaranteed present in every payload, or is it optional?\n3. Should the output key be `country` as well, and are there any other keys in the payload I need to carry over or transform?",
+  "raw": "Wait \u2014 before writing, I should confirm the conventions since I was told not to assume the values.\n\nThe sample shows `{\"country\": \"ESP\"}`, which looks like ISO 3166-1 alpha-3, but I must verify:\n\n1. Is the `country` value always ISO 3166-1 alpha-3 (ESP, FRA, DEU, USA), or could it be another format (numeric codes, full names, etc.)?\n2. Is the `country` key guaranteed present in every payload, or is it optional?\n3. Should the output key be `country` as well, and are there any other keys in the payload I need to carry over or transform?",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "nodialogue",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": null,
+  "code": "Wait \u2014 I need to confirm a few things before writing the adapter.\n\nThe sample shows `{\"country\": \"ESP\"}`, which looks like ISO 3166-1 alpha-3. Can you confirm the `country` value is always alpha-3, and specifically that the four markets arrive exactly as `\"ESP\"`, `\"FRA\"`, `\"DEU\"`, `\"USA\"`? Is the field always present and always uppercase, or could it be missing/null or in different casing?",
+  "raw": "Wait \u2014 I need to confirm a few things before writing the adapter.\n\nThe sample shows `{\"country\": \"ESP\"}`, which looks like ISO 3166-1 alpha-3. Can you confirm the `country` value is always alpha-3, and specifically that the four markets arrive exactly as `\"ESP\"`, `\"FRA\"`, `\"DEU\"`, `\"USA\"`? Is the field always present and always uppercase, or could it be missing/null or in different casing?",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "nodialogue",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": null,
+  "code": "I still have an open question before I can write a correct adapter. The sample value `\"ESP\"` is an ISO 3166-1 **alpha-3** code, but I must not assume that \u2014 the value could also be a full country name, a numeric code as a string, etc.\n\nBefore writing: Does the `country` field always carry an ISO 3166-1 alpha-3 code (e.g., \"ESP\", \"FRA\", \"DEU\", \"USA\"), and is it always uppercase and always present/non-null?",
+  "raw": "I still have an open question before I can write a correct adapter. The sample value `\"ESP\"` is an ISO 3166-1 **alpha-3** code, but I must not assume that \u2014 the value could also be a full country name, a numeric code as a string, etc.\n\nBefore writing: Does the `country` field always carry an ISO 3166-1 alpha-3 code (e.g., \"ESP\", \"FRA\", \"DEU\", \"USA\"), and is it always uppercase and always present/non-null?",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # System A carries country codes; the sample shows ALPHA-3 (\"ESP\"),\n    # while our validator requires ISO 3166-1 ALPHA-2 (\"ES\").\n    # Only these four markets ever appear: ES, FR, DE, US.\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    # Also tolerate the case where a value already arrives as ALPHA-2.\n    ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    raw = a_payload.get(\"country\")\n\n    country = None\n    if isinstance(raw, str):\n        code = raw.strip().upper()\n        if code in ALPHA3_TO_ALPHA2:\n            country = ALPHA3_TO_ALPHA2[code]\n        elif code in ALPHA2:\n            country = code\n\n    return {\"country\": country}",
+  "raw": "```python\ndef adapt(a_payload):\n    # System A carries country codes; the sample shows ALPHA-3 (\"ESP\"),\n    # while our validator requires ISO 3166-1 ALPHA-2 (\"ES\").\n    # Only these four markets ever appear: ES, FR, DE, US.\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    # Also tolerate the case where a value already arrives as ALPHA-2.\n    ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    raw = a_payload.get(\"country\")\n\n    country = None\n    if isinstance(raw, str):\n        code = raw.strip().upper()\n        if code in ALPHA3_TO_ALPHA2:\n            country = ALPHA3_TO_ALPHA2[code]\n        elif code in ALPHA2:\n            country = code\n\n    return {\"country\": country}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced_flagged",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # System A appears to send ISO 3166-1 alpha-3 country codes (e.g. \"ESP\").\n    # Our system requires ISO 3166-1 alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets, so we map robustly across\n    # the plausible System-A conventions (alpha-3, alpha-2, and full names).\n\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",  # Spain\n        \"FRA\": \"FR\",  # France\n        \"DEU\": \"DE\",  # Germany\n        \"USA\": \"US\",  # United States\n    }\n    name_to_alpha2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n    alpha2_valid = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    raw = a_payload.get(\"country\")\n\n    result = dict(a_payload)\n\n    country = None\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        if key in alpha3_to_alpha2:\n            country = alpha3_to_alpha2[key]\n        elif key in alpha2_valid:\n            country = key\n        elif key in name_to_alpha2:\n            country = name_to_alpha2[key]\n\n    result[\"country\"] = country\n    return result",
+  "raw": "```python\ndef adapt(a_payload):\n    # System A appears to send ISO 3166-1 alpha-3 country codes (e.g. \"ESP\").\n    # Our system requires ISO 3166-1 alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets, so we map robustly across\n    # the plausible System-A conventions (alpha-3, alpha-2, and full names).\n\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",  # Spain\n        \"FRA\": \"FR\",  # France\n        \"DEU\": \"DE\",  # Germany\n        \"USA\": \"US\",  # United States\n    }\n    name_to_alpha2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n    alpha2_valid = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    raw = a_payload.get(\"country\")\n\n    result = dict(a_payload)\n\n    country = None\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        if key in alpha3_to_alpha2:\n            country = alpha3_to_alpha2[key]\n        elif key in alpha2_valid:\n            country = key\n        elif key in name_to_alpha2:\n            country = name_to_alpha2[key]\n\n    result[\"country\"] = country\n    return result\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # Map System A's country codes to ISO 3166-1 alpha-2 as required by our validator.\n    # The feed carries only these four markets. The sample shows \"ESP\" (alpha-3),\n    # so we map from alpha-3 to alpha-2. We also defensively accept alpha-2 and\n    # common name/numeric variants for the same four markets, since we cannot\n    # assume exactly which convention System A uses beyond the sample.\n    ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    MAPPING = {\n        # ISO alpha-3\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        # ISO numeric\n        \"724\": \"ES\",\n        \"250\": \"FR\",\n        \"276\": \"DE\",\n        \"840\": \"US\",\n        # English names\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA (UNITED STATES)\": \"US\",\n    }\n\n    raw = a_payload.get(\"country\")\n\n    if raw is None:\n        result = dict(a_payload)\n        result[\"country\"] = None\n        return result\n\n    key = str(raw).strip().upper()\n\n    if key in ALPHA2:\n        code = key\n    elif key in MAPPING:\n        code = MAPPING[key]\n    else:\n        code = key  # pass through; validator will reject if invalid\n\n    result = dict(a_payload)\n    result[\"country\"] = code\n    return result",
+  "raw": "```python\ndef adapt(a_payload):\n    # Map System A's country codes to ISO 3166-1 alpha-2 as required by our validator.\n    # The feed carries only these four markets. The sample shows \"ESP\" (alpha-3),\n    # so we map from alpha-3 to alpha-2. We also defensively accept alpha-2 and\n    # common name/numeric variants for the same four markets, since we cannot\n    # assume exactly which convention System A uses beyond the sample.\n    ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    MAPPING = {\n        # ISO alpha-3\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        # ISO numeric\n        \"724\": \"ES\",\n        \"250\": \"FR\",\n        \"276\": \"DE\",\n        \"840\": \"US\",\n        # English names\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA (UNITED STATES)\": \"US\",\n    }\n\n    raw = a_payload.get(\"country\")\n\n    if raw is None:\n        result = dict(a_payload)\n        result[\"country\"] = None\n        return result\n\n    key = str(raw).strip().upper()\n\n    if key in ALPHA2:\n        code = key\n    elif key in MAPPING:\n        code = MAPPING[key]\n    else:\n        code = key  # pass through; validator will reject if invalid\n\n    result = dict(a_payload)\n    result[\"country\"] = code\n    return result\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # Map the four known markets from whatever convention System A uses\n    # into ISO 3166-1 alpha-2 codes required by our validator.\n    # The sample shows alpha-3 (\"ESP\" -> \"ES\"), so we handle alpha-3,\n    # but also defensively handle alpha-2, numeric, and common names.\n\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    alpha2_valid = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    numeric_to_alpha2 = {\n        \"724\": \"ES\", 724: \"ES\",\n        \"250\": \"FR\", 250: \"FR\",\n        \"276\": \"DE\", 276: \"DE\",\n        \"840\": \"US\", 840: \"US\",\n    }\n\n    name_to_alpha2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n\n    raw = a_payload.get(\"country\")\n\n    resolved = None\n\n    if isinstance(raw, str):\n        key = raw.strip()\n        upper = key.upper()\n\n        if upper in alpha3_to_alpha2:\n            resolved = alpha3_to_alpha2[upper]\n        elif upper in alpha2_valid:\n            resolved = upper\n        elif upper in numeric_to_alpha2:\n            resolved = numeric_to_alpha2[upper]\n        elif upper in name_to_alpha2:\n            resolved = name_to_alpha2[upper]\n    elif isinstance(raw, int):\n        if raw in numeric_to_alpha2:\n            resolved = numeric_to_alpha2[raw]\n\n    if resolved is None:\n        raise ValueError(\"Unrecognized country code: {!r}\".format(raw))\n\n    return {\"country\": resolved}",
+  "raw": "```python\ndef adapt(a_payload):\n    # Map the four known markets from whatever convention System A uses\n    # into ISO 3166-1 alpha-2 codes required by our validator.\n    # The sample shows alpha-3 (\"ESP\" -> \"ES\"), so we handle alpha-3,\n    # but also defensively handle alpha-2, numeric, and common names.\n\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    alpha2_valid = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    numeric_to_alpha2 = {\n        \"724\": \"ES\", 724: \"ES\",\n        \"250\": \"FR\", 250: \"FR\",\n        \"276\": \"DE\", 276: \"DE\",\n        \"840\": \"US\", 840: \"US\",\n    }\n\n    name_to_alpha2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n\n    raw = a_payload.get(\"country\")\n\n    resolved = None\n\n    if isinstance(raw, str):\n        key = raw.strip()\n        upper = key.upper()\n\n        if upper in alpha3_to_alpha2:\n            resolved = alpha3_to_alpha2[upper]\n        elif upper in alpha2_valid:\n            resolved = upper\n        elif upper in numeric_to_alpha2:\n            resolved = numeric_to_alpha2[upper]\n        elif upper in name_to_alpha2:\n            resolved = name_to_alpha2[upper]\n    elif isinstance(raw, int):\n        if raw in numeric_to_alpha2:\n            resolved = numeric_to_alpha2[raw]\n\n    if resolved is None:\n        raise ValueError(\"Unrecognized country code: {!r}\".format(raw))\n\n    return {\"country\": resolved}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced_flagged",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # System A appears to use ISO 3166-1 alpha-3 country codes (e.g. \"ESP\").\n    # Our system requires ISO 3166-1 alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets, so map defensively across\n    # the plausible conventions (alpha-3, alpha-2, and common English names).\n\n    country_map = {\n        # alpha-3\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        # alpha-2 (already correct, pass through)\n        \"ES\": \"ES\",\n        \"FR\": \"FR\",\n        \"DE\": \"DE\",\n        \"US\": \"US\",\n        # English names\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n    }\n\n    result = dict(a_payload)\n\n    raw = a_payload.get(\"country\")\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        result[\"country\"] = country_map.get(key, raw)\n    else:\n        result[\"country\"] = raw\n\n    return result",
+  "raw": "```python\ndef adapt(a_payload):\n    # System A appears to use ISO 3166-1 alpha-3 country codes (e.g. \"ESP\").\n    # Our system requires ISO 3166-1 alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets, so map defensively across\n    # the plausible conventions (alpha-3, alpha-2, and common English names).\n\n    country_map = {\n        # alpha-3\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        # alpha-2 (already correct, pass through)\n        \"ES\": \"ES\",\n        \"FR\": \"FR\",\n        \"DE\": \"DE\",\n        \"US\": \"US\",\n        # English names\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n    }\n\n    result = dict(a_payload)\n\n    raw = a_payload.get(\"country\")\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        result[\"country\"] = country_map.get(key, raw)\n    else:\n        result[\"country\"] = raw\n\n    return result\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "forced_flagged",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    # System A appears to use ISO 3166-1 alpha-3 codes (e.g. \"ESP\").\n    # Our system requires alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets.\n\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    # Also tolerate the possibility that the value already arrives as\n    # alpha-2, a country name, or with surrounding whitespace/casing.\n    NAME_TO_ALPHA2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n    VALID_ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    result = dict(a_payload)\n    raw = a_payload.get(\"country\")\n\n    country = None\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        if key in ALPHA3_TO_ALPHA2:\n            country = ALPHA3_TO_ALPHA2[key]\n        elif key in VALID_ALPHA2:\n            country = key\n        elif key in NAME_TO_ALPHA2:\n            country = NAME_TO_ALPHA2[key]\n\n    result[\"country\"] = country\n    return result",
+  "raw": "```python\ndef adapt(a_payload):\n    # System A appears to use ISO 3166-1 alpha-3 codes (e.g. \"ESP\").\n    # Our system requires alpha-2 codes (\"ES\", \"FR\", \"DE\", \"US\").\n    # The feed only ever carries these four markets.\n\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    # Also tolerate the possibility that the value already arrives as\n    # alpha-2, a country name, or with surrounding whitespace/casing.\n    NAME_TO_ALPHA2 = {\n        \"SPAIN\": \"ES\",\n        \"FRANCE\": \"FR\",\n        \"GERMANY\": \"DE\",\n        \"UNITED STATES\": \"US\",\n        \"UNITED STATES OF AMERICA\": \"US\",\n        \"USA\": \"US\",\n    }\n    VALID_ALPHA2 = {\"ES\", \"FR\", \"DE\", \"US\"}\n\n    result = dict(a_payload)\n    raw = a_payload.get(\"country\")\n\n    country = None\n    if isinstance(raw, str):\n        key = raw.strip().upper()\n        if key in ALPHA3_TO_ALPHA2:\n            country = ALPHA3_TO_ALPHA2[key]\n        elif key in VALID_ALPHA2:\n            country = key\n        elif key in NAME_TO_ALPHA2:\n            country = NAME_TO_ALPHA2[key]\n\n    result[\"country\"] = country\n    return result\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_volunteers",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 3,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    country = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[country]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    country = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[country]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_answers_only",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 5,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise ValueError(\"Payload must be a dict\")\n\n    if \"country\" not in a_payload:\n        raise ValueError(\"Missing required field: country\")\n\n    raw = a_payload[\"country\"]\n\n    if raw is None:\n        raise ValueError(\"Field 'country' must not be null\")\n\n    if not isinstance(raw, str):\n        raise ValueError(\"Field 'country' must be a string\")\n\n    normalized = raw.strip().upper()\n\n    if normalized not in alpha3_to_alpha2:\n        raise ValueError(f\"Unknown country code: {raw!r}\")\n\n    return {\"country\": alpha3_to_alpha2[normalized]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise ValueError(\"Payload must be a dict\")\n\n    if \"country\" not in a_payload:\n        raise ValueError(\"Missing required field: country\")\n\n    raw = a_payload[\"country\"]\n\n    if raw is None:\n        raise ValueError(\"Field 'country' must not be null\")\n\n    if not isinstance(raw, str):\n        raise ValueError(\"Field 'country' must be a string\")\n\n    normalized = raw.strip().upper()\n\n    if normalized not in alpha3_to_alpha2:\n        raise ValueError(f\"Unknown country code: {raw!r}\")\n\n    return {\"country\": alpha3_to_alpha2[normalized]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_answers_only",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 3,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    code = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[code]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    code = a_payload[\"country\"]\n    return {\"country\": alpha3_to_alpha2[code]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_answers_only",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 6,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise ValueError(\"Payload must be a dict\")\n\n    if \"country\" not in a_payload:\n        raise ValueError(\"Missing required field: country\")\n\n    raw = a_payload[\"country\"]\n    if raw is None:\n        raise ValueError(\"Field 'country' is null\")\n\n    if not isinstance(raw, str):\n        raise ValueError(\"Field 'country' must be a string\")\n\n    normalized = raw.strip().upper()\n\n    if normalized not in ALPHA3_TO_ALPHA2:\n        raise ValueError(\"Unexpected country code: {!r}\".format(raw))\n\n    return {\"country\": ALPHA3_TO_ALPHA2[normalized]}",
+  "raw": "```python\ndef adapt(a_payload):\n    ALPHA3_TO_ALPHA2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise ValueError(\"Payload must be a dict\")\n\n    if \"country\" not in a_payload:\n        raise ValueError(\"Missing required field: country\")\n\n    raw = a_payload[\"country\"]\n    if raw is None:\n        raise ValueError(\"Field 'country' is null\")\n\n    if not isinstance(raw, str):\n        raise ValueError(\"Field 'country' must be a string\")\n\n    normalized = raw.strip().upper()\n\n    if normalized not in ALPHA3_TO_ALPHA2:\n        raise ValueError(\"Unexpected country code: {!r}\".format(raw))\n\n    return {\"country\": ALPHA3_TO_ALPHA2[normalized]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "mitigation",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN:\n1. The sample shows `{\"country\": \"ESP\"}`, which is ISO 3166-1 alpha-3, but my system requires alpha-2. Only one example is given \u2014 is \"ESP\" actually alpha-3, or could it be a non-standard/custom code? I cannot confirm the encoding convention from a single sample.\n2. What are the exact source values System A sends for the other three markets (France, Germany, US)? I need the complete input\u2192output mapping for all four codes to build a safe lookup rather than guessing (e.g., is US sent as \"USA\"? Is Germany \"DEU\" or \"GER\"?).\n3. Are the source values guaranteed uppercase and free of whitespace, or must the adapter normalize case/trim before mapping?",
+  "raw": "ABSTAIN:\n1. The sample shows `{\"country\": \"ESP\"}`, which is ISO 3166-1 alpha-3, but my system requires alpha-2. Only one example is given \u2014 is \"ESP\" actually alpha-3, or could it be a non-standard/custom code? I cannot confirm the encoding convention from a single sample.\n2. What are the exact source values System A sends for the other three markets (France, Germany, US)? I need the complete input\u2192output mapping for all four codes to build a safe lookup rather than guessing (e.g., is US sent as \"USA\"? Is Germany \"DEU\" or \"GER\"?).\n3. Are the source values guaranteed uppercase and free of whitespace, or must the adapter normalize case/trim before mapping?",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_volunteers",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 3,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    code = a_payload.get(\"country\")\n    return {\"country\": alpha3_to_alpha2[code]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    code = a_payload.get(\"country\")\n    return {\"country\": alpha3_to_alpha2[code]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "dialogue_volunteers",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 3,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}",
+  "raw": "```python\ndef adapt(a_payload):\n    alpha3_to_alpha2 = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": alpha3_to_alpha2[a_payload[\"country\"]]}\n```",
+  "temperature": null,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "mitigation",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN: The sample shows `{\"country\": \"ESP\"}`, which resembles an ISO 3166-1 alpha-3 code, but I cannot safely assume the mapping convention from a single example. Before writing an adapter, please confirm:\n\n1. For each of the four markets, what is the EXACT value System A sends in the `country` field? (i.e., provide the full mapping for ES/Spain, FR/France, DE/Germany, US/United States). \"ESP\" could be ISO alpha-3, but I cannot verify that FR\u2192\"FRA\", DE\u2192\"DEU\", US\u2192\"USA\" without confirmation \u2014 System A might use a non-standard scheme (e.g., IOC codes where Germany is \"GER\", or names, or internal IDs) that happens to coincide with alpha-3 only for Spain.\n\n2. Is the value always uppercase / fixed-width, or can casing/whitespace vary?\n\n3. What output shape does your system require \u2014 the same `{\"country\": \"<ALPHA-2>\"}` key, or a different key name/structure?",
+  "raw": "ABSTAIN: The sample shows `{\"country\": \"ESP\"}`, which resembles an ISO 3166-1 alpha-3 code, but I cannot safely assume the mapping convention from a single example. Before writing an adapter, please confirm:\n\n1. For each of the four markets, what is the EXACT value System A sends in the `country` field? (i.e., provide the full mapping for ES/Spain, FR/France, DE/Germany, US/United States). \"ESP\" could be ISO alpha-3, but I cannot verify that FR\u2192\"FRA\", DE\u2192\"DEU\", US\u2192\"USA\" without confirmation \u2014 System A might use a non-standard scheme (e.g., IOC codes where Germany is \"GER\", or names, or internal IDs) that happens to coincide with alpha-3 only for Spain.\n\n2. Is the value always uppercase / fixed-width, or can casing/whitespace vary?\n\n3. What output shape does your system require \u2014 the same `{\"country\": \"<ALPHA-2>\"}` key, or a different key name/structure?",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "claude-opus-4-8",
+  "arm": "mitigation",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN:\n\n1. System A's sample shows `{\"country\": \"ESP\"}`, which is an ISO 3166-1 **alpha-3** code. Is System A guaranteed to always emit alpha-3 codes for these four markets (i.e., \"ESP\", \"FRA\", \"DEU\", \"USA\"), or could it emit other forms (alpha-2, numeric codes, full country names, mixed conventions)? I can only see one sample value (\"ESP\") and cannot infer the rule for the other three markets or confirm the encoding from a single data point.\n\n2. Confirm the exact mapping expected: ESP\u2192ES, FRA\u2192FR, DEU\u2192DE, USA\u2192US. This is not derivable purely from your requirements plus one sample; it requires knowing System A's convention for all four values.\n\nOnce the exact set of possible input values (or the confirmed convention) for all four markets is provided, a safe lookup-table adapter can be written.",
+  "raw": "ABSTAIN:\n\n1. System A's sample shows `{\"country\": \"ESP\"}`, which is an ISO 3166-1 **alpha-3** code. Is System A guaranteed to always emit alpha-3 codes for these four markets (i.e., \"ESP\", \"FRA\", \"DEU\", \"USA\"), or could it emit other forms (alpha-2, numeric codes, full country names, mixed conventions)? I can only see one sample value (\"ESP\") and cannot infer the rule for the other three markets or confirm the encoding from a single data point.\n\n2. Confirm the exact mapping expected: ESP\u2192ES, FRA\u2192FR, DEU\u2192DE, USA\u2192US. This is not derivable purely from your requirements plus one sample; it requires knowing System A's convention for all four values.\n\nOnce the exact set of possible input values (or the confirmed convention) for all four markets is provided, a safe lookup-table adapter can be written.",
+  "temperature": null,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ }
+]

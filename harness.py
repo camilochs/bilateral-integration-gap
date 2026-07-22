@@ -48,6 +48,10 @@ def client_for(model):
             _CLIENTS["anthropic"] = OpenAI(base_url="https://api.anthropic.com/v1/",
                                            api_key=os.environ["ANTHROPIC_API_KEY"])
         return _CLIENTS["anthropic"]
+    if model.startswith("gpt"):
+        if "openai" not in _CLIENTS:
+            _CLIENTS["openai"] = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+        return _CLIENTS["openai"]
     if model.startswith("deepseek"):
         if "deepseek" not in _CLIENTS:
             _CLIENTS["deepseek"] = OpenAI(base_url="https://api.deepseek.com",
@@ -58,14 +62,29 @@ def client_for(model):
 MODELS = os.environ.get("MODELS", "qwen2.5:7b,llama3.2:3b").split(",")
 N_RUNS = int(os.environ.get("N_RUNS", "2"))
 ROUNDS = int(os.environ.get("ROUNDS", "3"))     # dialogue rounds (each = B turn + A turn)
+# 7 arms. dialogue_volunteers = the original `dialogue` (A may volunteer); dialogue_answers_only
+# isolates ASKING as the mechanism (A answers strictly what is asked). mitigation = cold arm under a
+# gated-commit rule (write the adapter only if every needed convention is established; else ABSTAIN).
+DEFAULT_ARMS = ("provided", "nodialogue", "forced", "forced_flagged",
+                "dialogue_answers_only", "dialogue_volunteers", "mitigation")
+ARMS = tuple(os.environ.get("ARMS", ",".join(DEFAULT_ARMS)).split(","))
+SUBSET = os.environ.get("SUBSET", "")            # "SYN" / "API" filters tasks; empty = all
+TASKS_FILTER = set(filter(None, os.environ.get("TASKS", "").split(",")))   # explicit task ids
+OUT = os.environ.get("OUT", "_harness_results.json")   # pilot runs write elsewhere; the frozen v1 stays
 T = 0.7
 DANGER = re.compile(r"\b(os\.|sys\.|subprocess|shutil|socket|urllib|requests|open\s*\(|eval\s*\(|exec\s*\(|__import__|input\s*\()")
 
 def gen(model, messages, max_tokens=400):
     cl = client_for(model)
-    kwargs = dict(model=model, timeout=180, max_tokens=max_tokens, messages=messages)
-    if not model.startswith("claude"):     # Opus 4.8 deprecates temperature; locals use it for run variety
-        kwargs["temperature"] = T
+    kwargs = dict(model=model, timeout=180, messages=messages)
+    if model.startswith("gpt"):
+        # gpt-5.x: reasoning models — no temperature; max_completion_tokens includes reasoning
+        # tokens, so give headroom over the visible-output budget
+        kwargs["max_completion_tokens"] = max(max_tokens * 4, 2000)
+    else:
+        kwargs["max_tokens"] = max_tokens
+    if not (model.startswith("claude") or model.startswith("gpt")):
+        kwargs["temperature"] = T          # locals use temperature for run variety
     last = None
     for _ in range(3):
         try:
@@ -140,6 +159,14 @@ A_SYS = ("You represent the PROVIDER of System A at one company. You know ONLY t
          "questions truthfully from the facts above, and proactively volunteer any detail of your format or "
          "semantics that an outsider could get wrong. Do not invent facts beyond what you were told. Reply in "
          "1-3 sentences. If nothing remains to clarify, reply exactly DONE.")
+
+# answers-only variant: A never volunteers — isolates B's ASKING as the mechanism that moves the fact.
+A_SYS_STRICT = ("You represent the PROVIDER of System A at one company. You know ONLY the following about "
+                "your own system, and nothing about the other company's system:\n\n{ctx}\n\n"
+                "An engineer from ANOTHER company is building an integration that consumes your data. Answer "
+                "their questions truthfully from the facts above, but answer ONLY what is explicitly asked: do "
+                "NOT volunteer details, warnings, or conventions they did not ask about. Do not invent facts. "
+                "Reply in 1-3 sentences. If they ask nothing answerable, reply exactly DONE.")
 B_SYS = ("You are the INTEGRATOR at your company. You must write a Python function adapt(a_payload) that "
          "converts a payload from System A (another company) into the shape YOUR system requires. You know "
          "ONLY your own requirements, and a sample payload; you do NOT know System A's conventions:\n\n"
@@ -149,8 +176,8 @@ B_SYS = ("You are the INTEGRATOR at your company. You must write a Python functi
          "the payload whose meaning, format, units, encoding, or optionality is not certain. Reply in 1-3 "
          "sentences with your question(s). When you are confident you have every fact needed, reply exactly READY.")
 
-def dialogue(model, task):
-    ctxA = A_SYS.format(ctx=task["a_context"])
+def dialogue(model, task, volunteers=True):
+    ctxA = (A_SYS if volunteers else A_SYS_STRICT).format(ctx=task["a_context"])
     ctxB = B_SYS.format(ctx=task["b_context"], sample=json.dumps(sample_payload(task)))
     transcript = []                              # list of (speaker, text)
     def render(for_side):
@@ -178,11 +205,31 @@ FORCED_SYS = ("You are the INTEGRATOR at your company. Write a Python function a
               "You will receive NO further information and you CANNOT ask questions. Commit to your best "
               "implementation now.")
 
-def write_adapter(model, task, transcript, forced=False, flagged=False):
-    sys_p = (FORCED_SYS if (forced or flagged) else B_SYS).format(
+# mitigation variant: same information state as FORCED (cold, no questions possible), but the closing
+# order is a gated-commit RULE instead of a commit order — the arm that tests the paper's prescription.
+MITIG_SYS = ("You are the INTEGRATOR at your company. You must produce a Python function adapt(a_payload) that "
+             "converts a payload from System A (another company) into the shape YOUR system requires. You know "
+             "ONLY your own requirements and a sample payload; you do NOT know System A's conventions:\n\n"
+             "YOUR REQUIREMENTS:\n{ctx}\n\nSAMPLE a_payload (keys are real; the VALUES may hide conventions you "
+             "must not assume): {sample}\n\n"
+             "You will receive NO further information and you CANNOT ask questions in this setting.")
+
+def write_adapter(model, task, transcript, forced=False, flagged=False, mitigation=False):
+    sys_p = (MITIG_SYS if mitigation else FORCED_SYS if (forced or flagged) else B_SYS).format(
         ctx=task["b_context"], sample=json.dumps(sample_payload(task)))
     convo = "\n".join(f"{'System-A provider' if s=='A' else 'You'}: {t}" for s, t in transcript)
     convo_block = ("\n\nWhat you learned from talking to System A's provider:\n" + convo) if transcript else ""
+    if mitigation:
+        instr = ("Decide whether a safe adapter can be written." + convo_block +
+                 "\n\nRULE (mandatory): do not commit to an adapter that depends on a guessed convention. "
+                 "If every convention the adapter needs is established by YOUR REQUIREMENTS and the SAMPLE "
+                 "alone, return ONLY a Python function `def adapt(a_payload):` that takes one System-A payload "
+                 "dict and returns the dict your system requires — no explanation, no prints, standard library "
+                 "only. If any needed convention is NOT so established, do NOT write code: reply exactly "
+                 "`ABSTAIN:` followed by the precise question(s) that must be answered before a safe adapter "
+                 "can be written. An ABSTAIN hands the decision back to a human instead of shipping a guess.")
+        raw = gen(model, [{"role": "system", "content": sys_p}, {"role": "user", "content": instr}], 2000)
+        return raw, extract_code(raw)
     instr = ("Now write the adapter." + convo_block +
              "\n\nReturn ONLY a Python function `def adapt(a_payload):` that takes one System-A payload dict and "
              "returns the dict your system requires. No explanation, no prints. Handle the conventions you "
@@ -196,7 +243,7 @@ def write_adapter(model, task, transcript, forced=False, flagged=False):
                   f"following field(s): {fields}. You cannot ask about it. Make your best decision and commit.")
     if forced or flagged:
         instr += " Do NOT ask questions; commit to your best implementation."
-    raw = gen(model, [{"role": "system", "content": sys_p}, {"role": "user", "content": instr}], 800)
+    raw = gen(model, [{"role": "system", "content": sys_p}, {"role": "user", "content": instr}], 2000)
     return raw, extract_code(raw)
 
 def surfaced(transcript, task):
@@ -213,30 +260,38 @@ def provided_facts(task):
 def run_unit(task, model, arm, run_idx):
     forced = (arm == "forced")
     flagged = (arm == "forced_flagged")
-    if arm == "dialogue":
-        tr = dialogue(model, task)
+    mitig = (arm == "mitigation")
+    if arm in ("dialogue", "dialogue_volunteers", "dialogue_answers_only"):
+        tr = dialogue(model, task, volunteers=(arm != "dialogue_answers_only"))
         surf = surfaced(tr, task)
     elif arm == "provided":
         tr = [("A", provided_facts(task))]
         surf = {mm["field"]: True for mm in task["mismatches"]}   # given by construction
-    else:  # nodialogue / forced / forced_flagged (all cold; forced+flagged forbid asking)
+    else:  # nodialogue / forced / forced_flagged / mitigation (all cold)
         tr = []
         surf = surfaced(tr, task)
-    raw, code = write_adapter(model, task, tr, forced=forced, flagged=flagged)
+    raw, code = write_adapter(model, task, tr, forced=forced, flagged=flagged, mitigation=mitig)
     passes = run_adapter(code, task)                              # per-case list {pass,wrong,error} or None
     oc = outcome(passes, raw, task)
     return {"task": task["id"], "model": model, "arm": arm, "run": run_idx,
+            "subset": task.get("subset", ""),
             "n_mismatches": len(task["mismatches"]),
             "n_surfaced": sum(surf.values()), "surfaced": surf,
             "turns": len(tr),
+            # explicit gated-commit abstention (mitigation arm's designed loud outcome); recorded for
+            # every arm so the flag is comparable, independent of the asked/is_balk proxy
+            "abstained": "ABSTAIN" in (raw or "")[:200].upper(),
             # ── full raw record retained so any later question is a re-analysis, not a re-generation ──
             "per_case": passes, "code": code, "raw": raw,
             "temperature": (T if not model.startswith("claude") else None),
             **oc}
 
 def main():
-    units = [(t, m, arm, r) for t in corpus.TASKS for m in MODELS
-             for arm in ("provided", "nodialogue", "forced", "forced_flagged", "dialogue") for r in range(N_RUNS)]
+    tasks = [t for t in corpus.TASKS if not SUBSET or t.get("subset") == SUBSET]
+    if TASKS_FILTER:
+        tasks = [t for t in tasks if t["id"] in TASKS_FILTER]
+    units = [(t, m, arm, r) for t in tasks for m in MODELS
+             for arm in ARMS for r in range(N_RUNS)]
     print(f"units={len(units)}  models={MODELS}  runs={N_RUNS}  rounds={ROUNDS}", flush=True)
     recs = []; lock = threading.Lock(); done = [0]
     def work(u):
@@ -247,7 +302,7 @@ def main():
         return rec
     with cf.ThreadPoolExecutor(max_workers=4) as ex:
         list(ex.map(work, units))
-    json.dump(recs, open("_harness_results.json", "w"), indent=1)
+    json.dump(recs, open(OUT, "w"), indent=1)
 
     # ── aggregate ──
     def rate(rows, key):
@@ -255,7 +310,7 @@ def main():
     print("\n=== ARM SUMMARY per model (success | silent=ran&wrong | error=crash | asked | garbage) ===")
     print(f"{'model':16s} {'arm':11s} {'n':>3s} {'succ':>6s} {'silent':>7s} {'error':>6s} {'asked':>6s} {'garbage':>8s}")
     for m in MODELS:
-        for arm in ("provided", "nodialogue", "forced", "forced_flagged", "dialogue"):
+        for arm in ARMS:
             rows = [r for r in recs if r["arm"] == arm and r["model"] == m]
             print(f"{m:16s} {arm:11s} {len(rows):3d} {rate(rows,'success'):>6} {rate(rows,'silent_failure'):>7} "
                   f"{rate(rows,'error_failure'):>6} {rate(rows,'asked'):>6} {rate(rows,'garbage'):>8}")
@@ -264,7 +319,7 @@ def main():
     clean_ids = {t["id"] for t in corpus.TASKS if all(not m["inferable"] for m in t["mismatches"])}
     print(f"\n=== INFERABILITY SPLIT (clean = gap not recoverable from schema/sample: {sorted(clean_ids)}) ===")
     print(f"{'arm':12s} {'group':8s} {'n':>4s} {'success':>8s} {'silent_fail':>12s}")
-    for arm in ("provided", "nodialogue", "forced", "forced_flagged", "dialogue"):
+    for arm in ARMS:
         for grp, pred in (("clean", lambda r: r["task"] in clean_ids), ("control", lambda r: r["task"] not in clean_ids)):
             rows = [r for r in recs if r["arm"] == arm and pred(r)]
             if rows:
@@ -285,7 +340,7 @@ def main():
     print("\n=== PER-MODEL (success | silent_fail), nodialogue -> dialogue ===")
     for m in MODELS:
         nd = [r for r in recs if r["model"] == m and r["arm"] == "nodialogue"]
-        dl = [r for r in recs if r["model"] == m and r["arm"] == "dialogue"]
+        dl = [r for r in recs if r["model"] == m and r["arm"] in ("dialogue", "dialogue_volunteers")]
         print(f"{m:14s} success {rate(nd,'success')} -> {rate(dl,'success')} | "
               f"silent {rate(nd,'silent_failure')} -> {rate(dl,'silent_failure')}")
 

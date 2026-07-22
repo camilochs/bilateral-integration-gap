@@ -1,0 +1,758 @@
+{
+ "n_models": 7,
+ "models": [
+  "claude-opus-4-8",
+  "gpt-5.6-sol",
+  "gemma2:2b",
+  "qwen2.5:7b",
+  "llama3.1:8b",
+  "mistral-nemo:12b",
+  "qwen2.5:14b"
+ ],
+ "capable": [
+  "claude-opus-4-8",
+  "gpt-5.6-sol",
+  "qwen2.5:7b",
+  "qwen2.5:14b"
+ ],
+ "n_tasks": 24,
+ "n_irreducible": 17,
+ "n_controls": 6,
+ "records": 5208,
+ "provided_correct_irred": {
+  "k": 246,
+  "n": 272,
+  "rate": 0.9044,
+  "ci": [
+   0.8636,
+   0.9339
+  ]
+ },
+ "forced_silent_irred": {
+  "k": 167,
+  "n": 272,
+  "rate": 0.614,
+  "ci": [
+   0.5549,
+   0.6699
+  ]
+ },
+ "flagged_silent_irred": {
+  "k": 189,
+  "n": 272,
+  "rate": 0.6949,
+  "ci": [
+   0.6377,
+   0.7465
+  ]
+ },
+ "forced_silent_ctrl": {
+  "k": 15,
+  "n": 96,
+  "rate": 0.1562,
+  "ci": [
+   0.097,
+   0.2419
+  ]
+ },
+ "forced_success_ctrl": {
+  "k": 76,
+  "n": 96,
+  "rate": 0.7917,
+  "ci": [
+   0.7,
+   0.8609
+  ]
+ },
+ "percell_gate_forced_silent": {
+  "k": 184,
+  "n": 277,
+  "rate": 0.6643,
+  "ci": [
+   0.6067,
+   0.7173
+  ]
+ },
+ "percell_qualifying_cells": 69,
+ "cold_ask_by_model": {
+  "claude-opus-4-8": {
+   "k": 70,
+   "n": 72,
+   "rate": 0.9722,
+   "ci": [
+    0.9043,
+    0.9923
+   ]
+  },
+  "gpt-5.6-sol": {
+   "k": 69,
+   "n": 72,
+   "rate": 0.9583,
+   "ci": [
+    0.8845,
+    0.9857
+   ]
+  },
+  "gemma2:2b": {
+   "k": 0,
+   "n": 120,
+   "rate": 0.0,
+   "ci": [
+    0.0,
+    0.031
+   ]
+  },
+  "qwen2.5:7b": {
+   "k": 1,
+   "n": 120,
+   "rate": 0.0083,
+   "ci": [
+    0.0015,
+    0.0457
+   ]
+  },
+  "llama3.1:8b": {
+   "k": 0,
+   "n": 120,
+   "rate": 0.0,
+   "ci": [
+    0.0,
+    0.031
+   ]
+  },
+  "mistral-nemo:12b": {
+   "k": 108,
+   "n": 120,
+   "rate": 0.9,
+   "ci": [
+    0.8333,
+    0.9419
+   ]
+  },
+  "qwen2.5:14b": {
+   "k": 0,
+   "n": 120,
+   "rate": 0.0,
+   "ci": [
+    0.0,
+    0.031
+   ]
+  }
+ },
+ "provided_success_by_model": {
+  "claude-opus-4-8": {
+   "k": 72,
+   "n": 72,
+   "rate": 1.0,
+   "ci": [
+    0.9493,
+    1.0
+   ]
+  },
+  "gpt-5.6-sol": {
+   "k": 72,
+   "n": 72,
+   "rate": 1.0,
+   "ci": [
+    0.9493,
+    1.0
+   ]
+  },
+  "gemma2:2b": {
+   "k": 17,
+   "n": 120,
+   "rate": 0.1417,
+   "ci": [
+    0.0904,
+    0.2152
+   ]
+  },
+  "qwen2.5:7b": {
+   "k": 98,
+   "n": 120,
+   "rate": 0.8167,
+   "ci": [
+    0.738,
+    0.8757
+   ]
+  },
+  "llama3.1:8b": {
+   "k": 81,
+   "n": 120,
+   "rate": 0.675,
+   "ci": [
+    0.5869,
+    0.7522
+   ]
+  },
+  "mistral-nemo:12b": {
+   "k": 80,
+   "n": 120,
+   "rate": 0.6667,
+   "ci": [
+    0.5783,
+    0.7447
+   ]
+  },
+  "qwen2.5:14b": {
+   "k": 114,
+   "n": 120,
+   "rate": 0.95,
+   "ci": [
+    0.8952,
+    0.9769
+   ]
+  }
+ },
+ "dialogue_answers_success_irred": {
+  "k": 174,
+  "n": 272,
+  "rate": 0.6397,
+  "ci": [
+   0.5811,
+   0.6944
+  ]
+ },
+ "dialogue_volunteers_success_irred": {
+  "k": 171,
+  "n": 272,
+  "rate": 0.6287,
+  "ci": [
+   0.5698,
+   0.6839
+  ]
+ },
+ "nodialogue_success_irred": {
+  "k": 20,
+  "n": 272,
+  "rate": 0.0735,
+  "ci": [
+   0.0481,
+   0.1108
+  ]
+ },
+ "mitigation_silent_irred": {
+  "k": 22,
+  "n": 272,
+  "rate": 0.0809,
+  "ci": [
+   0.054,
+   0.1194
+  ]
+ },
+ "mitigation_abstain_irred": {
+  "k": 234,
+  "n": 272,
+  "rate": 0.8603,
+  "ci": [
+   0.8141,
+   0.8965
+  ]
+ },
+ "mitigation_success_ctrl": {
+  "k": 18,
+  "n": 96,
+  "rate": 0.1875,
+  "ci": [
+   0.122,
+   0.277
+  ]
+ },
+ "mitigation_abstain_ctrl": {
+  "k": 67,
+  "n": 96,
+  "rate": 0.6979,
+  "ci": [
+   0.5999,
+   0.7807
+  ]
+ },
+ "syn_forced_silent": {
+  "k": 47,
+  "n": 80,
+  "rate": 0.5875,
+  "ci": [
+   0.478,
+   0.6889
+  ]
+ },
+ "api_forced_silent": {
+  "k": 120,
+  "n": 192,
+  "rate": 0.625,
+  "ci": [
+   0.5547,
+   0.6904
+  ]
+ },
+ "d_forced_vs_provided_silent": {
+  "diff_pp": 55.5,
+  "ci_pp": [
+   40.4,
+   69.5
+  ],
+  "n": [
+   272,
+   272
+  ]
+ },
+ "d_flagged_vs_forced_silent": {
+  "diff_pp": 8.1,
+  "ci_pp": [
+   2.9,
+   14.0
+  ],
+  "n": [
+   272,
+   272
+  ]
+ },
+ "d_irred_vs_ctrl_forced_silent": {
+  "diff_pp": 45.8,
+  "ci_pp": [
+   23.2,
+   66.1
+  ],
+  "n": [
+   272,
+   96
+  ]
+ },
+ "d_api_vs_syn_forced_silent": {
+  "diff_pp": 3.7,
+  "ci_pp": [
+   -23.3,
+   28.0
+  ],
+  "n": [
+   192,
+   80
+  ]
+ },
+ "d_vol_vs_ans_success": {
+  "diff_pp": -1.1,
+  "ci_pp": [
+   -5.9,
+   3.7
+  ],
+  "n": [
+   272,
+   272
+  ]
+ },
+ "d_ans_vs_cold_success": {
+  "diff_pp": 56.6,
+  "ci_pp": [
+   49.3,
+   63.2
+  ],
+  "n": [
+   272,
+   272
+  ]
+ },
+ "d_mitig_vs_forced_silent": {
+  "diff_pp": -53.3,
+  "ci_pp": [
+   -69.9,
+   -36.4
+  ],
+  "n": [
+   272,
+   272
+  ]
+ },
+ "d_mitig_vs_forced_success_ctrl": {
+  "diff_pp": -60.4,
+  "ci_pp": [
+   -78.1,
+   -46.9
+  ],
+  "n": [
+   96,
+   96
+  ]
+ },
+ "qualitative": {
+  "n_records": 5208,
+  "n_silent": 1498,
+  "silent_shapes": {
+   "acknowledged": 247,
+   "thorough": 224,
+   "confident": 1027
+  },
+  "silent_shapes_by_model": {
+   "claude-opus-4-8": {
+    "acknowledged": 43,
+    "thorough": 12,
+    "confident": 7
+   },
+   "gemma2:2b": {
+    "confident": 350,
+    "thorough": 37
+   },
+   "gpt-5.6-sol": {
+    "thorough": 13,
+    "confident": 39
+   },
+   "llama3.1:8b": {
+    "confident": 118,
+    "thorough": 51,
+    "acknowledged": 80
+   },
+   "mistral-nemo:12b": {
+    "acknowledged": 53,
+    "confident": 109,
+    "thorough": 39
+   },
+   "qwen2.5:14b": {
+    "confident": 169,
+    "acknowledged": 48,
+    "thorough": 34
+   },
+   "qwen2.5:7b": {
+    "confident": 235,
+    "acknowledged": 23,
+    "thorough": 38
+   }
+  },
+  "n_abstentions": 587,
+  "abstentions": {
+   "over": 130,
+   "ctrl-on-point": 115,
+   "on-point": 363,
+   "ctrl-off-point": 15,
+   "off-point": 94
+  },
+  "irreducible_abstentions_on_point": [
+   342,
+   434
+  ],
+  "examples": {
+   "acknowledged": [
+    [
+     "claude-opus-4-8",
+     "T10_page_base",
+     "forced",
+     1,
+     27
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced",
+     1,
+     35
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced",
+     0,
+     35
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced",
+     2,
+     52
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced_flagged",
+     0,
+     41
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced_flagged",
+     2,
+     32
+    ],
+    [
+     "claude-opus-4-8",
+     "T13_absent_stock",
+     "forced_flagged",
+     1,
+     46
+    ],
+    [
+     "claude-opus-4-8",
+     "T15_vat_inclusive",
+     "forced",
+     1,
+     50
+    ]
+   ],
+   "thorough": [
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "forced_flagged",
+     1,
+     32
+    ],
+    [
+     "claude-opus-4-8",
+     "T13_absent_stock",
+     "forced_flagged",
+     2,
+     36
+    ],
+    [
+     "claude-opus-4-8",
+     "T13_absent_stock",
+     "dialogue_volunteers",
+     1,
+     11
+    ],
+    [
+     "claude-opus-4-8",
+     "T13_absent_stock",
+     "dialogue_volunteers",
+     2,
+     16
+    ],
+    [
+     "claude-opus-4-8",
+     "T19_pack_quantity",
+     "forced",
+     0,
+     33
+    ],
+    [
+     "claude-opus-4-8",
+     "T19_pack_quantity",
+     "forced",
+     1,
+     31
+    ],
+    [
+     "claude-opus-4-8",
+     "T19_pack_quantity",
+     "forced_flagged",
+     0,
+     22
+    ],
+    [
+     "claude-opus-4-8",
+     "T19_pack_quantity",
+     "forced",
+     2,
+     33
+    ]
+   ],
+   "confident": [
+    [
+     "claude-opus-4-8",
+     "T20_temp_scale",
+     "forced_flagged",
+     0,
+     11
+    ],
+    [
+     "claude-opus-4-8",
+     "T16_phone_e164",
+     "forced",
+     0,
+     20
+    ],
+    [
+     "claude-opus-4-8",
+     "T17_excel_serial",
+     "forced",
+     0,
+     6
+    ],
+    [
+     "claude-opus-4-8",
+     "T17_excel_serial",
+     "forced",
+     2,
+     6
+    ],
+    [
+     "claude-opus-4-8",
+     "T17_excel_serial",
+     "forced_flagged",
+     0,
+     5
+    ],
+    [
+     "claude-opus-4-8",
+     "T17_excel_serial",
+     "forced_flagged",
+     2,
+     6
+    ],
+    [
+     "claude-opus-4-8",
+     "T17_excel_serial",
+     "forced_flagged",
+     1,
+     5
+    ],
+    [
+     "gpt-5.6-sol",
+     "T3_timezone",
+     "forced_flagged",
+     2,
+     6
+    ]
+   ],
+   "over": [
+    [
+     "claude-opus-4-8",
+     "T23_alpha3_country",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T23_alpha3_country",
+     "mitigation",
+     1
+    ],
+    [
+     "claude-opus-4-8",
+     "T23_alpha3_country",
+     "mitigation",
+     2
+    ],
+    [
+     "claude-opus-4-8",
+     "T7_id_shape",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T7_id_shape",
+     "mitigation",
+     1
+    ],
+    [
+     "claude-opus-4-8",
+     "T7_id_shape",
+     "mitigation",
+     2
+    ],
+    [
+     "claude-opus-4-8",
+     "T21_epoch_ms",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T21_epoch_ms",
+     "mitigation",
+     1
+    ]
+   ],
+   "on-point": [
+    [
+     "claude-opus-4-8",
+     "T9_psp_minor_units",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T9_psp_minor_units",
+     "mitigation",
+     1
+    ],
+    [
+     "claude-opus-4-8",
+     "T9_psp_minor_units",
+     "mitigation",
+     2
+    ],
+    [
+     "claude-opus-4-8",
+     "T10_page_base",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T10_page_base",
+     "mitigation",
+     1
+    ],
+    [
+     "claude-opus-4-8",
+     "T10_page_base",
+     "mitigation",
+     2
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "mitigation",
+     0
+    ],
+    [
+     "claude-opus-4-8",
+     "T11_weight_units",
+     "mitigation",
+     1
+    ]
+   ],
+   "off-point": [
+    [
+     "gpt-5.6-sol",
+     "T9_psp_minor_units",
+     "mitigation",
+     0
+    ],
+    [
+     "gpt-5.6-sol",
+     "T9_psp_minor_units",
+     "mitigation",
+     1
+    ],
+    [
+     "gpt-5.6-sol",
+     "T9_psp_minor_units",
+     "mitigation",
+     2
+    ],
+    [
+     "gpt-5.6-sol",
+     "T10_page_base",
+     "mitigation",
+     0
+    ],
+    [
+     "gpt-5.6-sol",
+     "T12_gbx_pence",
+     "mitigation",
+     1
+    ],
+    [
+     "gpt-5.6-sol",
+     "T19_pack_quantity",
+     "mitigation",
+     1
+    ],
+    [
+     "gpt-5.6-sol",
+     "T19_pack_quantity",
+     "mitigation",
+     2
+    ],
+    [
+     "gemma2:2b",
+     "T1_order_date",
+     "mitigation",
+     2
+    ]
+   ]
+  }
+ }
+}

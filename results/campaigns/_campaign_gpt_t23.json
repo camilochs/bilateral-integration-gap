@@ -1,0 +1,554 @@
+[
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "provided",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "provided",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "provided",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 1,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    adapted = dict(a_payload)\n    adapted[\"country\"] = country_map[a_payload[\"country\"]]\n    return adapted",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    adapted = dict(a_payload)\n    adapted[\"country\"] = country_map[a_payload[\"country\"]]\n    return adapted",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "nodialogue",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": null,
+  "code": "What exact `country` values does System A send for Spain, France, Germany, and the United States, and is `country` always present and non-null?",
+  "raw": "What exact `country` values does System A send for Spain, France, Germany, and the United States, and is `country` always present and non-null?",
+  "temperature": 0.7,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "nodialogue",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_codes = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_codes[a_payload[\"country\"]]}",
+  "raw": "def adapt(a_payload):\n    country_codes = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_codes[a_payload[\"country\"]]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "nodialogue",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": null,
+  "code": "What exact `country` values does System A use for Spain, France, Germany, and the United States, and is `country` always present as a non-null string?",
+  "raw": "What exact `country` values does System A use for Spain, France, Germany, and the United States, and is `country` always present as a non-null string?",
+  "temperature": 0.7,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    result = dict(a_payload)\n    result[\"country\"] = country_map[result[\"country\"]]\n    return result",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    result = dict(a_payload)\n    result[\"country\"] = country_map[result[\"country\"]]\n    return result",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_codes = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    adapted = dict(a_payload)\n    adapted[\"country\"] = country_codes[a_payload[\"country\"]]\n    return adapted",
+  "raw": "def adapt(a_payload):\n    country_codes = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    adapted = dict(a_payload)\n    adapted[\"country\"] = country_codes[a_payload[\"country\"]]\n    return adapted",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced_flagged",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    result = dict(a_payload)\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        \"ES\": \"ES\",\n        \"FR\": \"FR\",\n        \"DE\": \"DE\",\n        \"US\": \"US\",\n    }\n    result[\"country\"] = country_map[str(a_payload[\"country\"]).strip().upper()]\n    return result",
+  "raw": "def adapt(a_payload):\n    result = dict(a_payload)\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n        \"ES\": \"ES\",\n        \"FR\": \"FR\",\n        \"DE\": \"DE\",\n        \"US\": \"US\",\n    }\n    result[\"country\"] = country_map[str(a_payload[\"country\"]).strip().upper()]\n    return result",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced_flagged",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    result = dict(a_payload)\n    result[\"country\"] = country_map[a_payload[\"country\"]]\n    return result",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    result = dict(a_payload)\n    result[\"country\"] = country_map[a_payload[\"country\"]]\n    return result",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "forced_flagged",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"].strip().upper()]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"].strip().upper()]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_answers_only",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 5,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n    return {\"country\": country_map[a_payload[\"country\"]]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_answers_only",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 6,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null string\")\n\n    country = country.strip().upper()\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if country not in mapping:\n        raise ValueError(f\"unsupported country code: {country!r}\")\n\n    return {\"country\": mapping[country]}",
+  "raw": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null string\")\n\n    country = country.strip().upper()\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if country not in mapping:\n        raise ValueError(f\"unsupported country code: {country!r}\")\n\n    return {\"country\": mapping[country]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_volunteers",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 6,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null string\")\n\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    try:\n        return {\"country\": mapping[country]}\n    except KeyError:\n        raise ValueError(f\"unsupported country code: {country!r}\") from None",
+  "raw": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null string\")\n\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    try:\n        return {\"country\": mapping[country]}\n    except KeyError:\n        raise ValueError(f\"unsupported country code: {country!r}\") from None",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "mitigation",
+  "run": 0,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN: What exact `country` value does System A use for each of the ES, FR, DE, and US markets, and how should each map to the required ISO 3166-1 alpha-2 code?",
+  "raw": "ABSTAIN: What exact `country` value does System A use for each of the ES, FR, DE, and US markets, and how should each map to the required ISO 3166-1 alpha-2 code?",
+  "temperature": 0.7,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "mitigation",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN: What System A country values correspond to the required ISO 3166-1 alpha-2 codes ES, FR, DE, and US?",
+  "raw": "ABSTAIN: What System A country values correspond to the required ISO 3166-1 alpha-2 codes ES, FR, DE, and US?",
+  "temperature": 0.7,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_volunteers",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 5,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if country not in country_map:\n        raise ValueError(\"country must be one of: ESP, FRA, DEU, USA\")\n\n    return {\"country\": country_map[country]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if country not in country_map:\n        raise ValueError(\"country must be one of: ESP, FRA, DEU, USA\")\n\n    return {\"country\": country_map[country]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "mitigation",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 0,
+  "surfaced": {
+   "country": false
+  },
+  "turns": 0,
+  "abstained": true,
+  "per_case": null,
+  "code": "ABSTAIN: What exact `country` value does System A use for each of the four markets (ES, FR, DE, and US)?",
+  "raw": "ABSTAIN: What exact `country` value does System A use for each of the four markets (ES, FR, DE, and US)?",
+  "temperature": 0.7,
+  "invalid": true,
+  "asked": true,
+  "garbage": false,
+  "success": false,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_volunteers",
+  "run": 2,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 6,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null ISO 3166-1 alpha-3 string\")\n\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    try:\n        return {\"country\": mapping[country.upper()]}\n    except KeyError:\n        raise ValueError(f\"unsupported country code: {country!r}\") from None",
+  "raw": "def adapt(a_payload):\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n\n    country = a_payload.get(\"country\")\n    if not isinstance(country, str):\n        raise ValueError(\"country must be a non-null ISO 3166-1 alpha-3 string\")\n\n    mapping = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    try:\n        return {\"country\": mapping[country.upper()]}\n    except KeyError:\n        raise ValueError(f\"unsupported country code: {country!r}\") from None",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ },
+ {
+  "task": "T23_alpha3_country",
+  "model": "gpt-5.6-sol",
+  "arm": "dialogue_answers_only",
+  "run": 1,
+  "subset": "API",
+  "n_mismatches": 1,
+  "n_surfaced": 1,
+  "surfaced": {
+   "country": true
+  },
+  "turns": 6,
+  "abstained": false,
+  "per_case": [
+   "pass",
+   "pass"
+  ],
+  "code": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n    if \"country\" not in a_payload:\n        raise ValueError(\"country is required\")\n\n    country = a_payload[\"country\"]\n    if country not in country_map:\n        raise ValueError(\"country must be one of: ESP, FRA, DEU, USA\")\n\n    return {\"country\": country_map[country]}",
+  "raw": "def adapt(a_payload):\n    country_map = {\n        \"ESP\": \"ES\",\n        \"FRA\": \"FR\",\n        \"DEU\": \"DE\",\n        \"USA\": \"US\",\n    }\n\n    if not isinstance(a_payload, dict):\n        raise TypeError(\"a_payload must be a dict\")\n    if \"country\" not in a_payload:\n        raise ValueError(\"country is required\")\n\n    country = a_payload[\"country\"]\n    if country not in country_map:\n        raise ValueError(\"country must be one of: ESP, FRA, DEU, USA\")\n\n    return {\"country\": country_map[country]}",
+  "temperature": 0.7,
+  "invalid": false,
+  "asked": false,
+  "garbage": false,
+  "success": true,
+  "silent_failure": false,
+  "error_failure": false
+ }
+]

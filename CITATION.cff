@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite both the paper and this archived release."
+title: "Code Agents under Split Specifications: research artifact"
+authors:
+  - family-names: "Chacón Sartori"
+    given-names: "Camilo"
+    orcid: "https://orcid.org/0000-0002-8543-9893"
+    affiliation: "Apeiron Intelligence"
+license: MIT
+repository-code: "https://github.com/camilochs/bilateral-integration-gap"
+type: software
+preferred-citation:
+  type: article
+  title: "Code agents under split specifications: an empirical study of silent failure in cross-organizational integration"
+  authors:
+    - family-names: "Chacón Sartori"
+      given-names: "Camilo"
+      orcid: "https://orcid.org/0000-0002-8543-9893"
+  journal: "Journal of Systems and Software"
+  year: 2026
+  notes: "Under review"

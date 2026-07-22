@@ -1,0 +1,382 @@
+{
+ "n_records": 5208,
+ "n_silent": 1498,
+ "silent_shapes": {
+  "acknowledged": 247,
+  "thorough": 224,
+  "confident": 1027
+ },
+ "silent_shapes_by_model": {
+  "claude-opus-4-8": {
+   "acknowledged": 43,
+   "thorough": 12,
+   "confident": 7
+  },
+  "gemma2:2b": {
+   "confident": 350,
+   "thorough": 37
+  },
+  "gpt-5.6-sol": {
+   "thorough": 13,
+   "confident": 39
+  },
+  "llama3.1:8b": {
+   "confident": 118,
+   "thorough": 51,
+   "acknowledged": 80
+  },
+  "mistral-nemo:12b": {
+   "acknowledged": 53,
+   "confident": 109,
+   "thorough": 39
+  },
+  "qwen2.5:14b": {
+   "confident": 169,
+   "acknowledged": 48,
+   "thorough": 34
+  },
+  "qwen2.5:7b": {
+   "confident": 235,
+   "acknowledged": 23,
+   "thorough": 38
+  }
+ },
+ "n_abstentions": 587,
+ "abstentions": {
+  "over": 130,
+  "ctrl-on-point": 115,
+  "on-point": 363,
+  "ctrl-off-point": 15,
+  "off-point": 94
+ },
+ "irreducible_abstentions_on_point": [
+  342,
+  434
+ ],
+ "examples": {
+  "acknowledged": [
+   [
+    "claude-opus-4-8",
+    "T10_page_base",
+    "forced",
+    1,
+    27
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced",
+    1,
+    35
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced",
+    0,
+    35
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced",
+    2,
+    52
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced_flagged",
+    0,
+    41
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced_flagged",
+    2,
+    32
+   ],
+   [
+    "claude-opus-4-8",
+    "T13_absent_stock",
+    "forced_flagged",
+    1,
+    46
+   ],
+   [
+    "claude-opus-4-8",
+    "T15_vat_inclusive",
+    "forced",
+    1,
+    50
+   ]
+  ],
+  "thorough": [
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "forced_flagged",
+    1,
+    32
+   ],
+   [
+    "claude-opus-4-8",
+    "T13_absent_stock",
+    "forced_flagged",
+    2,
+    36
+   ],
+   [
+    "claude-opus-4-8",
+    "T13_absent_stock",
+    "dialogue_volunteers",
+    1,
+    11
+   ],
+   [
+    "claude-opus-4-8",
+    "T13_absent_stock",
+    "dialogue_volunteers",
+    2,
+    16
+   ],
+   [
+    "claude-opus-4-8",
+    "T19_pack_quantity",
+    "forced",
+    0,
+    33
+   ],
+   [
+    "claude-opus-4-8",
+    "T19_pack_quantity",
+    "forced",
+    1,
+    31
+   ],
+   [
+    "claude-opus-4-8",
+    "T19_pack_quantity",
+    "forced_flagged",
+    0,
+    22
+   ],
+   [
+    "claude-opus-4-8",
+    "T19_pack_quantity",
+    "forced",
+    2,
+    33
+   ]
+  ],
+  "confident": [
+   [
+    "claude-opus-4-8",
+    "T20_temp_scale",
+    "forced_flagged",
+    0,
+    11
+   ],
+   [
+    "claude-opus-4-8",
+    "T16_phone_e164",
+    "forced",
+    0,
+    20
+   ],
+   [
+    "claude-opus-4-8",
+    "T17_excel_serial",
+    "forced",
+    0,
+    6
+   ],
+   [
+    "claude-opus-4-8",
+    "T17_excel_serial",
+    "forced",
+    2,
+    6
+   ],
+   [
+    "claude-opus-4-8",
+    "T17_excel_serial",
+    "forced_flagged",
+    0,
+    5
+   ],
+   [
+    "claude-opus-4-8",
+    "T17_excel_serial",
+    "forced_flagged",
+    2,
+    6
+   ],
+   [
+    "claude-opus-4-8",
+    "T17_excel_serial",
+    "forced_flagged",
+    1,
+    5
+   ],
+   [
+    "gpt-5.6-sol",
+    "T3_timezone",
+    "forced_flagged",
+    2,
+    6
+   ]
+  ],
+  "over": [
+   [
+    "claude-opus-4-8",
+    "T23_alpha3_country",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T23_alpha3_country",
+    "mitigation",
+    1
+   ],
+   [
+    "claude-opus-4-8",
+    "T23_alpha3_country",
+    "mitigation",
+    2
+   ],
+   [
+    "claude-opus-4-8",
+    "T7_id_shape",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T7_id_shape",
+    "mitigation",
+    1
+   ],
+   [
+    "claude-opus-4-8",
+    "T7_id_shape",
+    "mitigation",
+    2
+   ],
+   [
+    "claude-opus-4-8",
+    "T21_epoch_ms",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T21_epoch_ms",
+    "mitigation",
+    1
+   ]
+  ],
+  "on-point": [
+   [
+    "claude-opus-4-8",
+    "T9_psp_minor_units",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T9_psp_minor_units",
+    "mitigation",
+    1
+   ],
+   [
+    "claude-opus-4-8",
+    "T9_psp_minor_units",
+    "mitigation",
+    2
+   ],
+   [
+    "claude-opus-4-8",
+    "T10_page_base",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T10_page_base",
+    "mitigation",
+    1
+   ],
+   [
+    "claude-opus-4-8",
+    "T10_page_base",
+    "mitigation",
+    2
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "mitigation",
+    0
+   ],
+   [
+    "claude-opus-4-8",
+    "T11_weight_units",
+    "mitigation",
+    1
+   ]
+  ],
+  "off-point": [
+   [
+    "gpt-5.6-sol",
+    "T9_psp_minor_units",
+    "mitigation",
+    0
+   ],
+   [
+    "gpt-5.6-sol",
+    "T9_psp_minor_units",
+    "mitigation",
+    1
+   ],
+   [
+    "gpt-5.6-sol",
+    "T9_psp_minor_units",
+    "mitigation",
+    2
+   ],
+   [
+    "gpt-5.6-sol",
+    "T10_page_base",
+    "mitigation",
+    0
+   ],
+   [
+    "gpt-5.6-sol",
+    "T12_gbx_pence",
+    "mitigation",
+    1
+   ],
+   [
+    "gpt-5.6-sol",
+    "T19_pack_quantity",
+    "mitigation",
+    1
+   ],
+   [
+    "gpt-5.6-sol",
+    "T19_pack_quantity",
+    "mitigation",
+    2
+   ],
+   [
+    "gemma2:2b",
+    "T1_order_date",
+    "mitigation",
+    2
+   ]
+  ]
+ }
+}

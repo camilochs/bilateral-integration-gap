@@ -1,0 +1,30 @@
+{
+  "title": "Code Agents under Split Specifications: Corpus, Oracle, Frozen Runs, and Reproduction Harness",
+  "description": "<p>Research artifact for the paper <em>Code agents under split specifications: an empirical study of silent failure in cross-organizational integration</em> (Journal of Systems and Software, under review). Includes the 24-task bilateral integration corpus (self-validating), the deterministic execution oracle (no model-based evaluation), the 7-condition experiment harness, the frozen run of 5,208 units across 7 models (five local open-weight 2B–14B and two frontier systems), the pre-registered predictions with deviation log, and an analysis pipeline that regenerates every number in the paper offline (seeded bootstrap; byte-identical reproduction via <code>reproduce.sh</code>).</p>",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Chacón Sartori, Camilo",
+      "orcid": "0000-0002-8543-9893",
+      "affiliation": "Apeiron Intelligence"
+    }
+  ],
+  "keywords": [
+    "LLM code agents",
+    "system integration",
+    "interoperability",
+    "silent failure",
+    "multi-agent systems",
+    "empirical software engineering",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/camilochs/bilateral-integration-gap",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
